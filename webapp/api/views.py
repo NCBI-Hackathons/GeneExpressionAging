@@ -143,7 +143,7 @@ def series_find(request):
         result_values = all_data[[text in s for s in all_data.index]].index.values[0:MAX_GEN_RESULT]
         result = {"ok": True,
                   "dataset": dataset_name,
-                  "result": [s for s in result_values]}
+                  "result": [[s, "GenId: {}".format(s)] for s in result_values]}
         return JsonResponse(result)
 
     else:
