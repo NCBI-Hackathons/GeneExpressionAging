@@ -18,6 +18,11 @@ You can browse:
     http://127.0.0.1:8000/genvis/test
 
 
+## webserver
+
+The server is running on the server (ask for the IP). In order to connect, use tunneling.
+
+
 ## REST API
 
 http://127.0.0.1:8000/api/series/find
@@ -27,7 +32,7 @@ http://127.0.0.1:8000/api/series/find
              "text": <search-text>}
     Output: {"ok": True/False,
              "dataset": "mouse_aging",
-             "result": [ <gene-id-1>, <gene-id-2>, ...]}
+             "result": [ <result-1>, <result-2>, ...]}
 
 http://127.0.0.1:8000/api/timeseries
 
