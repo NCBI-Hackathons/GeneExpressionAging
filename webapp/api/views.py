@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.core.serializers.json import DjangoJSONEncoder
+from django.views.decorators.csrf import csrf_exempt
 from api.tags import method
 
 import json
@@ -93,3 +94,18 @@ def time_series(request):
     result = {"xvalues": xvalues,
               "series": [{"name": v[0], "values": v[1]} for v in series_values]}
     return JsonResponse(result, encoder=NumpyEncoder)
+
+
+MAX_GEN_RESULT = 10
+
+@csrf_exempt
+@method(allowed=['POST'])
+def gen_find(request):
+    body = json.loads(request.body.decode("utf-8"))
+    text = body.get("text", "")
+
+    result_values = all_data[[text in s for s in all_data.index]].index.values[0:MAX_GEN_RESULT]
+
+    result = {"ok": True,
+              "result": [s for s in result_values]}
+    return JsonResponse(result)

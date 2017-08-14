@@ -16,3 +16,8 @@ To run the server:
 You can browse:
 
     http://127.0.0.1:8000/genvis/test
+
+
+## REST API
+
+http://127.0.0.1:8000/api/
