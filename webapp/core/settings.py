@@ -123,3 +123,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+DATASETS = {
+    "mouse_aging": {
+        "index_name": "gene",
+        "series": ["age", "flu", "replica", "tissue"]
+    }
+}

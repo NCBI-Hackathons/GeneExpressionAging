@@ -20,15 +20,19 @@ You can browse:
 
 ## REST API
 
-http://127.0.0.1:8000/api/gen/find
+http://127.0.0.1:8000/api/series/find
 
-    Input:  {"text": <search-text>}
+    Input:  {"dataset": "mouse_aging",
+             "serie": <serie-name>,
+             "text": <search-text>}
     Output: {"ok": True/False,
+             "dataset": "mouse_aging",
              "result": [ <gene-id-1>, <gene-id-2>, ...]}
 
 http://127.0.0.1:8000/api/timeseries
 
-    Input: {"xaxis": <dimension-name>,
+    Input: {"dataset": "mouse_aging",   // We only have this
+            "xaxis": <dimension-name>,
             "series": <dimension-name>,
             "restrictions": <list-of-restrictions>}
 
@@ -39,7 +43,8 @@ http://127.0.0.1:8000/api/timeseries
 
     Example:
     
-        {"xaxis": "age",
+        {"dataset": "mouse_aging",
+         "xaxis": "age",
          "series": "gene",
          "restrictions": [
              ["tissue", "in", ["AM", "LUNG"]],
@@ -48,7 +53,8 @@ http://127.0.0.1:8000/api/timeseries
              ]}    
 
     Output:
-        {"xvalues": <list-of-floats>,
+        {"dataset": "mouse_aging",
+         "xvalues": <list-of-floats>,
          "series": [
              {"values": <list-of-floats>,
               "name": <string>}

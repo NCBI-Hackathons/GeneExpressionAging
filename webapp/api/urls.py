@@ -3,6 +3,6 @@ import api.views
 
 
 urlpatterns = [
-    url(r'^gen/find', api.views.gen_find, name="api_gen_find"),
+    url(r'^series/find', api.views.series_find, name="api_series_find"),
     url(r'^timeseries', api.views.time_series, name="api_time_series"),
 ]

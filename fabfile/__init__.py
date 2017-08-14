@@ -15,7 +15,7 @@ def timeseries():
     print("Result: {}".format(r.json()))
 
 @task
-def gen_find(text):
-    value = {'text': text}
-    r = requests.post("http://127.0.0.1:8000/api/gen/find", json=value)
+def series_find(text):
+    value = {"dataset": "mouse_aging", "serie": "gene", "text": text}
+    r = requests.post("http://127.0.0.1:8000/api/series/find", json=value)
     print("Result: {}".format(r.json()))
