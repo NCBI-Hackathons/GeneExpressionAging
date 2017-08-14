@@ -1,0 +1,57 @@
+body {
+  padding-top: 60px;
+}
+section {
+  padding-top: 60px;
+  margin-top: -60px;
+}
+h1 {
+  margin-top: 35px;
+  margin-bottom: 25px;
+}
+h2 {
+  margin-top: 35px;
+  margin-bottom: 15px;
+}
+.main {
+  padding-bottom: 35px;
+}
+.video-state-RI {
+  background-color: gold !important;
+}
+.video-state-RD {
+  background-color: lavender !important;
+}
+.video-state-RC {
+  background-color: lavender !important;
+}
+.video-state-RV {
+  background-color: lavender !important;
+}
+.video-state-RY {
+  background-color: lavender !important;
+}
+.video-state-PI {
+  background-color: gold !important;
+}
+.video-state-PD {
+  background-color: lightgreen !important;
+}
+.form-condensed .control-group {
+  margin-top: 0;
+  margin-bottom: 100px;
+}
+#worm_canvas {
+  width: 100%;
+  padding-top: 0%;
+  background-color: white;
+  border: 1px solid blue;
+}
+#roi_canvas {
+  width: 100%;
+  padding-top: 0%;
+  height: auto;
+  background-color: white;
+  border: 1px solid blue;
+}
+/*# sourceMappingURL=./main.css.map */
