@@ -84,6 +84,7 @@ def generate_data(xaxis, series, restrictions):
         return xvalues, list(zip(yaxes, result))
 
 
+@csrf_exempt
 @method(allowed=['POST'])
 def time_series(request):
     body = json.loads(request.body.decode("utf-8"))
