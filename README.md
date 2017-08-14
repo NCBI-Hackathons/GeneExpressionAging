@@ -22,6 +22,20 @@ You can browse:
 
 The server is running on the server (ask for the IP). In order to connect, use tunneling.
 
+## screens
+
+The django server is running directly (django runserver) and using 'screen' to detach the window between SSH sessions:
+
+- Create the window:
+  Run 'screen' and run the server
+
+- Detach the window:
+  On the screen, type "Ctrl" + a + d
+
+- Reatach window:
+  On the ssh session, type `screen -r`
+
+
 
 ## REST API
 
