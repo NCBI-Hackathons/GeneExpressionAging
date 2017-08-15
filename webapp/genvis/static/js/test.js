@@ -35,7 +35,7 @@ function test(test_url) {
                    xaxis: "age",
                    series: "gene",
                    restrictions: [["tissue", "in", ["AM", "LUNG"]],
-                                  ["flu", "eq", "F150"],
+                                  ["flu", "eq", 150],
                                   ["gene", "in", ["ENSMUSG00000000088", "ENSMUSG00000000001"]]]},
             errorLineMode: 'lines',
             lineMode: 'lines+markers',
@@ -90,6 +90,26 @@ function test(test_url) {
             lineMode: 'markers',
             errorBars: true
         };
+        redraw();
+    });
+
+    $("#test4Button").click(function (ev) {
+        xaxis = $("#xaxis").val();
+        series = $("#series").val();
+        restrictions = JSON.parse($("#restrictions").val());
+
+        configData = {
+            title: "Test 4: Gene expression",
+            xlabel: "Tissue",
+            ylabel: "Expression (unit)",
+            data: {dataset: "mouse_aging",
+                  xaxis: xaxis,
+                  series: series,
+                  restrictions: restrictions},
+            errorLineMode: 'lines',
+            lineMode: 'lines+markers',
+            errorBars: false
+            };
         redraw();
     });
 

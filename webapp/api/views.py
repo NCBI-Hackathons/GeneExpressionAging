@@ -23,8 +23,9 @@ class NumpyEncoder(DjangoJSONEncoder):
             return super(NumpyEncoder, self).default(obj)
 
 
-all_data = pd.DataFrame.from_csv("../data/all_data.csv")
-column_components = pd.DataFrame.from_csv("../data/column_components.csv")
+all_data = pd.DataFrame.from_csv("../data/norm_data/norm_all.csv")
+column_components = pd.DataFrame.from_csv("../data/norm_data/norm_metadata.csv")
+mouse_genemap = pd.read_csv("../data/mouse_geneid_map_GRCm38_081517.csv", dtype=str)
 
 def generate_data(dataset, xaxis, series, restrictions):
     data = all_data
@@ -119,7 +120,7 @@ def time_series(request):
     return JsonResponse(result, encoder=NumpyEncoder)
 
 
-MAX_GEN_RESULT = 10
+MAX_GENE_RESULT = 10
 
 @csrf_exempt
 @method(allowed=['POST'])
@@ -141,10 +142,20 @@ def series_find(request):
         return JsonResponse(result)
     
     if serie == dataset["index_name"]:
-        result_values = all_data[[text in s for s in all_data.index]].index.values[0:MAX_GEN_RESULT]
+        data = mouse_genemap[
+            (mouse_genemap["ensembl_gene_id"].notnull() & mouse_genemap["ensembl_gene_id"].str.contains(text)) |
+            (mouse_genemap["external_gene_name"].notnull() & mouse_genemap["external_gene_name"].str.contains(text)) |
+            (mouse_genemap["entrezgene"].notnull() & mouse_genemap["entrezgene"].str.contains(text))]    
+        result_values = []
+        for i, row in enumerate(data[["ensembl_gene_id", "external_gene_name", "entrezgene"]].iterrows()):
+            if i > MAX_GENE_RESULT:
+                break
+            index, (ensembl_gene_id, external_gene_name, entrezgene) = row
+            result_values.append((ensembl_gene_id, external_gene_name, entrezgene))
+
         result = {"ok": True,
                   "dataset": dataset_name,
-                  "result": [[s, "GenId: {}".format(s)] for s in result_values]}
+                  "result": [list(s) for s in result_values]}
         return JsonResponse(result)
 
     else:

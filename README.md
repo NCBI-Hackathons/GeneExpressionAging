@@ -36,6 +36,11 @@ The django server is running directly (django runserver) and using 'screen' to d
   On the ssh session, type `screen -r`
 
 
+## Datasets
+
+Dataset structure:
+
+- <folder> TODO
 
 ## REST API
 
