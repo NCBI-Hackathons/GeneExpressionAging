@@ -53,8 +53,7 @@
     <main-chart
             data="[[chartData]]" title="Gene expression (tissues: AM, LUNG) (Flu: F150)"
             xlabel="Age (months)"
-            ylabel="Expression (unit)"
-    ></main-chart>
+            ylabel="Expression (unit)"></main-chart>
     <!--<paper-autocomplete label="Select Gene" id="ensembleSearch" source="[[prompt]]" min-length="2" on-change="getEnsembleId()"></paper-autocomplete>-->
   </template>
   <script>
@@ -95,7 +94,7 @@
           "series": "gene",
           "restrictions": [
             ["tissue", "in", ["AM", "LUNG"]],
-            ["flu", "eq", "F150"],
+            ["flu", "eq", 150],
             ["gene", "in", this.searchTermList]
         ]}
         this.$.ajax.url = this.geneFindEndpoint;
