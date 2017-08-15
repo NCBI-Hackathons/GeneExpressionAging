@@ -9,7 +9,8 @@
     "jquery": "^3.2.1",
     "jquery-ui": "^1.12.1",
     "paper-autocomplete": "^3.0.1",
-    "paper-button": "^2.0.0"
+    "paper-button": "^2.0.0",
+    "iron-ajax": "^2.0.5"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
