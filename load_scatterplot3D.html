@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+    <script src="plotly-latest.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-1.2.0.min.js"></script>
+  </head>
+
+  <body>
+    <h1>Prinicpal Component Analysis</h1>
+    
+    <div id='myDiv'></div>
+    
+    <script>
+    
+    //NOTE: data.json is the output of the function get_scatterplot3D_template.R
+    Plotly.d3.json('data.json', function(err, fig) {
+      // assuming json is formatted as { "data": [/* */], "layout": {/* */} } from R plotly output .js
+      
+       //loop through all colorscale objects to convert RGBA plotly output -> RGB
+      for (i = 0; i < fig.data[0].marker.colorscale.length; i++){ 
+        fig.data[0].marker.colorscale[i][1] = RGBAtoRGB(fig.data[0].marker.colorscale[i][1])
+        fig.data[1].marker.colorscale[i][1] = RGBAtoRGB(fig.data[1].marker.colorscale[i][1])
+      }
+      
+      Plotly.plot('myDiv', fig.data, fig.layout);
+    });
+    
+    function RGBAtoRGB(r){
+      var r3 = r.split(',')[0].split('(')[1]
+      var g3 = r.split(',')[1]
+      var b3 = r.split(',')[2].split(')')[0]
+      return "rgb("+r3+","+g3+","+b3+")";
+    } 
+      
+    </script>
+    
+    
+  </body>
+
+</html>
