@@ -24,10 +24,11 @@ render_pca_plot_json <- function(data, metadata, variable_of_interest, genes_of_
   }
   X <- prcomp(scale(t(sub_data),center=TRUE,scale=TRUE))   #run PCA on scaled data
   pca_result <- as.data.frame(X$x[,1:3])
-  pca_result$color <- as.integer(metadata[,variable_of_interest])   #append the color-value based on the variable of interest
+  pca_result$color <- as.factor(metadata[,variable_of_interest])   #append the color-value based on the variable of interest
 
+  pca_result$id <- rownames(metadata)
   #render plotly
-  p <- plot_ly(pca_result, x = ~PC1, y = ~PC2, z = ~PC3, color = ~color, colors = color_list) %>%
+  p <- plot_ly(pca_result, x = ~PC1, y = ~PC2, z = ~PC3, color = ~color, colors = color_list[seq(1:length(levels(factor(metadata[,variable_of_interest]))))], text= ~id) %>%
     add_markers() %>%
     layout(scene = list(xaxis = list(title = 'PC1'),
                         yaxis = list(title = 'PC2'),
@@ -42,7 +43,7 @@ render_pca_plot_json <- function(data, metadata, variable_of_interest, genes_of_
 #inputs from the user
 data <- read.csv("/Users/kkalantar/Documents/GradSchool/NCBIhackathon/GeneExpressionAging/data/am.cleaned.log.counts.csv")
 metadata <- read.csv("/Users/kkalantar/Documents/GradSchool/NCBIhackathon/GeneExpressionAging/data/column_components.csv",row.names=1)
-variable_of_interest <- 'flu'
+variable_of_interest <- 'replica'
 genes_of_interest <- rownames(data)[1:100]
 
 render_pca_plot_json(data, metadata, variable_of_interest, genes_of_interest)
