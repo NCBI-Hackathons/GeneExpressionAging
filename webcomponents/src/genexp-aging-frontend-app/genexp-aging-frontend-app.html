@@ -2,7 +2,8 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/paper-autocomplete/paper-autocomplete.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<!--<link rel="import" href="external-scripts.html">-->
+<link rel="import" href="external-scripts.html">
+<link rel="import" href="main-chart.html">
 
 <dom-module id="genexp-aging-frontend-app">
   <template>
@@ -49,6 +50,11 @@
     </iron-ajax>
     <paper-input id="geneSearchInputField" value="{{searchTerm}}" label="Search by gene names, gene ids or ensemble ids"></paper-input>
     <paper-button raised class="indigo" on-click="search">Search</paper-button>
+    <main-chart
+            data="[[chartData]]" title="Gene expression (tissues: AM, LUNG) (Flu: F150)"
+            xlabel="Age (months)"
+            ylabel="Expression (unit)"
+    ></main-chart>
     <!--<paper-autocomplete label="Select Gene" id="ensembleSearch" source="[[prompt]]" min-length="2" on-change="getEnsembleId()"></paper-autocomplete>-->
   </template>
   <script>
@@ -71,6 +77,10 @@
           type: String,
           value: 'http://127.0.0.1:8000/api/timeseries'
           //value: 'http://127.0.0.1:8000/api/series/find'
+        },
+        chartData: {
+          type: Object,
+          value: {}
         }
       },
       search: function(){
@@ -92,9 +102,7 @@
         this.$.ajax.generateRequest();
       },
       handleResponse: function(request){
-        console.log(request);
-        var response = request.detail.response;
-        console.log(response);
+        this.chartData = request.detail.response;
       },
       getEnsembleId: function(){
         //queries API and returns gene id/gene name to ensemble id mapping

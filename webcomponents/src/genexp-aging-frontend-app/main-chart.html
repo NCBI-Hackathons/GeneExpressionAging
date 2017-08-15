@@ -1,0 +1,154 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-autocomplete/paper-autocomplete.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<!--<link rel="import" href="external-scripts.html">-->
+
+<dom-module id="genexp-aging-frontend-app">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+        <div id="canvas"></div>
+    </template>
+    <script>
+        Polymer({
+            is: 'main-chart',
+            properties: {
+                title: {
+                    type: String,
+                    value: ""
+                },
+                xlabel: {
+                    type: String,
+                    value: ""
+                },
+                ylabel: {
+                    type: String,
+                    value: ""
+                },
+                data: {
+                    type: Object,
+                    value: {},
+                    observer: 'redraw'
+                },
+                errorLineMode: {
+                    type: String,
+                    value: 'lines'
+                },
+                errorBars: {
+                    type: Boolean,
+                    value: false
+                },
+                lineMode: {
+                    type: String,
+                    value: 'lines+markers'
+                },
+                colors: {
+                    type: Array,
+                    value: [
+                    '#1f77b4',  // muted blue
+                    '#ff7f0e',  // safety orange
+                    '#2ca02c',  // cooked asparagus green
+                    '#d62728',  // brick red
+                    '#9467bd',  // muted purple
+                    '#8c564b',  // chestnut brown
+                    '#e377c2',  // raspberry yogurt pink
+                    '#7f7f7f',  // middle gray
+                    '#bcbd22',  // curry yellow-green
+                    '#17becf'   // blue-teal
+                    ]
+                }
+            },
+            redraw: function(){
+                if(this.data){
+                    var xvalues = this.data["xvalues"];
+                    var series = this.data["series"];
+                    mainCanvas = this.$$("#canvas");
+                    console.log(mainCanvas);
+                    var plots = [];
+                    var self = this;
+                    $.each(series, function(index, current) {
+                        var name = current["name"];
+                        var values = current["values"];
+                        var ymean = [];
+                        var ystd = [];
+                        var ymin = [];
+                        var ymax = [];
+                        var color = self.colors[index % self.colors.length];
+
+                        $.each(values, function(index, value) {
+                            var mean = value[0];
+                            var std = value[1];
+                            ymean.push(mean);
+                            ystd.push(std);
+                            ymin.push(mean - std);
+                            ymax.push(mean + std);
+                        });
+
+                        if (self.errorLineMode != null) {
+                            plots.push({
+                                mode: self.errorLineMode,
+                                line: {shape: 'spline', color: color, width: 0},
+                                showlegend: false,
+                                x: xvalues,
+                                y: ymin,
+                                hoverinfo: "none",
+                                fill: null,
+                            });
+                            plots.push({
+                                mode: self.errorLineMode,
+                                line: {shape: 'spline', color: color, width: 0},
+                                showlegend: false,
+                                x: xvalues,
+                                y: ymax,
+                                hoverinfo: "none",
+                                fill: 'tonexty',
+                                opacity: 0.5
+                            });
+                        }
+
+                        if (self.errorBars) {
+                            plots.push({
+                                mode: self.lineMode,
+                                line: {shape: 'spline', color: color},
+                                name: name,
+                                x: xvalues,
+                                y: ymean,
+                                error_y: {type: 'data', array: ystd, visible: true}
+                            });
+                        } else {
+                            plots.push({
+                                mode: self.lineMode,
+                                line: {shape: 'spline', color: color},
+                                name: name,
+                                x: xvalues,
+                                y: ymean
+                            });
+
+                        };
+
+                        var defaultPlotlyConfiguration = {
+                            displayModeBar: true,
+                            modeBarButtonsToRemove: [
+                                'sendDataToCloud',
+                                'autoScale2d',
+                                'hoverClosestCartesian',
+                                'hoverCompareCartesian',
+                                'lasso2d',
+                                'select2d'],
+                            displaylogo: false,
+                            showTips: false };
+                        Plotly.newPlot(mainCanvas, plots, {
+                            title: self.title,
+                            yaxis: {title: self.ylabel},
+                            xaxis: {title: self.xlabel}
+                        }, defaultPlotlyConfiguration);
+                    });
+                }
+            }
+        });
+    </script>
+</dom-module>
