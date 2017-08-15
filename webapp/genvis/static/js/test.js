@@ -93,6 +93,26 @@ function test(test_url) {
         redraw();
     });
 
+    $("#test4Button").click(function (ev) {
+        xaxis = $("#xaxis").val();
+        series = $("#series").val();
+        restrictions = JSON.parse($("#restrictions").val());
+
+        configData = {
+            title: "Test 4: Gene expression",
+            xlabel: "Tissue",
+            ylabel: "Expression (unit)",
+            data: {dataset: "mouse_aging",
+                  xaxis: xaxis,
+                  series: series,
+                  restrictions: restrictions},
+            errorLineMode: 'lines',
+            lineMode: 'lines+markers',
+            errorBars: false
+            };
+        redraw();
+    });
+
     function redraw() {
         data = configData['data'];
         errorLineMode = configData['errorLineMode'];

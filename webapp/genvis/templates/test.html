@@ -4,11 +4,27 @@
 <div class="row">
   <h1>Welcome to NU Genvis</h1>
   {% csrf_token %}
-  <div id="main-canvas" style="width:900px;height:450px;"></div>
+  <div id="main-canvas" style="width:900px;height:450px;" class="span8"></div>
+  <div class="row">
+    <div class="span4">
+        xaxis:
+        <textarea id="xaxis" rows="1">tissue</textarea>
+      </div>
+    <div class="span4">
+        series:
+        <textarea id="series" rows="1">gene</textarea>
+      </div>
+      <div class="span4">
+      Restrictions:
+      <textarea id="restrictions" rows="4">[["gene", "in", ["ENSMUSG00000000088", "ENSMUSG00000000001"]],["age", "eq", 4]]</textarea>
+    </div>
+  </div>
+
   <div class="row">
     <button id="test1Button" class="btn btn-info">Test 1!</button>
     <button id="test2Button" class="btn btn-info">Test 2!</button>
     <button id="test3Button" class="btn btn-info">Test 3!</button>
+    <button id="test4Button" class="btn btn-info">Test 4!</button>
   </div>
 </div>
 {% endblock %}
