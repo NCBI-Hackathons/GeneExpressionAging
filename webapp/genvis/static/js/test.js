@@ -31,7 +31,8 @@ function test(test_url) {
             title: "Test 1: Gene expression (tissues: AM, LUNG) (Flu: F150)",
             xlabel: "Age (months)",
             ylabel: "Expression (unit)",
-            data: {xaxis: "age",
+            data: {dataset: "mouse_aging",
+                   xaxis: "age",
                    series: "gene",
                    restrictions: [["tissue", "in", ["AM", "LUNG"]],
                                   ["flu", "eq", "F150"],
@@ -48,9 +49,10 @@ function test(test_url) {
             title: "Test 3: Gene expression",
             xlabel: "Tissue",
             ylabel: "Expression (unit)",
-            data: {xaxis: "tissue",
-                  series: "gene",
-                  restrictions: [
+            data: {dataset: "mouse_aging",
+                   xaxis: "tissue",
+                   series: "gene",
+                   restrictions: [
                       ["gene", "in", ["ENSMUSG00000000088", "ENSMUSG00000000001"]],
                       ["age", "eq", 12]]},
             errorLineMode: null,
@@ -78,7 +80,8 @@ function test(test_url) {
             title: "Test 3: Gene expression",
             xlabel: "Tissue",
             ylabel: "Expression (unit)",
-            data: {xaxis: "tissue",
+            data: {dataset: "mouse_aging",
+                  xaxis: "tissue",
                   series: "gene",
                   restrictions: [
                       ["gene", "in", ["ENSMUSG00000000088", "ENSMUSG00000000001"]],

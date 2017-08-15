@@ -1,0 +1,7 @@
+{
+  "name": "genexp-aging-frontend",
+  "short_name": "genexp-aging-frontend",
+  "description": "Web elements used by the gene expression aging viewer",
+  "start_url": "/",
+  "display": "standalone"
+}
