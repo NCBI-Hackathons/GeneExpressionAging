@@ -27,7 +27,7 @@
             method="post",
             handle-as="json"
             content-type="application/json"
-            last-response="{{handleResponse}}"
+            on-response="handleResponse"
             debounce-duration="500">
     </iron-ajax>
     <paper-radio-group selected="{{geneInput}}">
@@ -56,13 +56,12 @@
         }
       },
       search: function(){
-        this.$.ajax.body = [{
+        this.$.ajax.body = {
           "dataset": "mouse_aging",
           "serie": "gene",
           "text": this.searchTerm
-        }]
+        }
         this.$.ajax.url = this.geneFindEndpoint;
-        console.log(this.$.ajax);
         this.$.ajax.generateRequest();
       },
       handleResponse: function(request){
