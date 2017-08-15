@@ -81,7 +81,8 @@ def sort_age_flu(age_flu_list):
 # @param expressions Dictionary mean gene expression by age; of form "gene_id: {age1, age2, ..., ageN}"
 def get_annotations(gene_locations, expressions):
 
-    annotations = {}
+    annots_list = []
+    annots_by_chr = {}
 
     example_gene_id = list(expressions.keys())[0]
     ages = expressions[example_gene_id]
@@ -89,7 +90,7 @@ def get_annotations(gene_locations, expressions):
     # Example "age_flu": 18M_F150 (18 months, f150).  All ages are in months.
     sorted_ages = sort_age_flu(list(ages.keys()))
 
-    for gene_id in list(expressions.keys()):
+    for gene_id in list(expressions.keys())[:100]:
 
         if gene_id not in gene_locations:
             # print('Gene locations missing for ' + gene_id)
@@ -110,18 +111,24 @@ def get_annotations(gene_locations, expressions):
         annotation = [gene_id, start, length, 0]
         annotation += ordered_mean_expressions_by_age
 
-        if chromosome in annotations:
-            annotations[chromosome].append(annotation)
+        if chromosome in annots_by_chr:
+            annots_by_chr[chromosome].append(annotation)
         else:
-            annotations[chromosome] = [annotation]
+            annots_by_chr[chromosome] = [annotation]
+
+    for chromosome in annots_by_chr:
+        annots_list.append({
+            'chr': chromosome,
+            'annots': annots_by_chr[chromosome]
+        })
 
     keys = ['gene_id', 'start', 'length', 'traceIndex']
 
-    keys.extend(ages)
+    keys.extend(sorted_ages)
 
     annotations = {
         'keys': keys,
-        'annotations': annotations
+        'annots': annots_list
     }
 
     return annotations
