@@ -29,10 +29,14 @@ if (TRUE)  {     # load data for template
 
 
 # for template usage, just randomly select 50 features
-cor <- dat[, 1:51] %>% 
+cor <- dat[1:50, ] %>% 
 dplyr::select(-ensembl) %>% 
+t %>%
 as.data.frame %>%
 cor(method='pearson')
+
+colnames(cor) <- dat$ensembl[1:50]
+rownames(cor) <- dat$ensembl[1:50]
 
 # set 3 cluster both row-wise and col-wise for now
 d <- d3heatmap::d3heatmap(cor, k_row=3, k_col=3)
@@ -44,5 +48,6 @@ write(json, file=file.path('./webcomponents/src/corr-d3heatmap/template_corr_d3h
 htmlwidgets::saveWidget(as_widget(d), 
                         file.path("./webcomponents/src/corr-d3heatmap/template_corr_d3heatmap.html"), 
                         selfcontained=FALSE)
+                        #file.path("/home/freeman/github/GeneExpressionAging/webcomponents/src/corr-d3heatmap/template_corr_d3heatmap.html"), 
 
 
