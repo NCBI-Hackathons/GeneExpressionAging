@@ -35,7 +35,7 @@ function test(test_url) {
                    xaxis: "age",
                    series: "gene",
                    restrictions: [["tissue", "in", ["AM", "LUNG"]],
-                                  ["flu", "eq", "F150"],
+                                  ["flu", "eq", 150],
                                   ["gene", "in", ["ENSMUSG00000000088", "ENSMUSG00000000001"]]]},
             errorLineMode: 'lines',
             lineMode: 'lines+markers',

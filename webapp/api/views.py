@@ -23,8 +23,8 @@ class NumpyEncoder(DjangoJSONEncoder):
             return super(NumpyEncoder, self).default(obj)
 
 
-all_data = pd.DataFrame.from_csv("../data/all_data.csv")
-column_components = pd.DataFrame.from_csv("../data/column_components.csv")
+all_data = pd.DataFrame.from_csv("../data/norm_data/norm_all.csv")
+column_components = pd.DataFrame.from_csv("../data/norm_data/norm_metadata.csv")
 mouse_genemap = pd.read_csv("../data/mouse_geneid_map_GRCm38_081517.csv", dtype=str)
 
 def generate_data(dataset, xaxis, series, restrictions):
