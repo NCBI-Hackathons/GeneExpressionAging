@@ -17,7 +17,7 @@ options(tibble.width = Inf)
 
 ## biomaRt
 ensembl <- useEnsembl(biomart="ensembl", dataset="mmusculus_gene_ensembl")
-(attr.tmp <- listAttributes(ensembl))
+# only 37 can be specified for GRCh version, but not available for mouse
 
 all_chr_genes <- getBM(attributes=c('ensembl_gene_id', 'ensembl_transcript_id', 
                                     'hgnc_symbol', 'hgnc_id', 
@@ -26,12 +26,12 @@ all_chr_genes <- getBM(attributes=c('ensembl_gene_id', 'ensembl_transcript_id',
                                     'chromosome_name', 'start_position', 'end_position'), 
                        mart = ensembl)
 
+
 ret <- all_chr_genes %>%
 dplyr::mutate(url_entrezgene=paste0('<a href="https://www.ncbi.nlm.nih.gov/gene/', entrezgene, '" target="_blank">', entrezgene, '</a>')) %>% 
-dplyr::mutate(url_ensembl=paste0('<a href="http://grch37.ensembl.org/Mouse/Gene/Summary?g=', ensembl_gene_id, '" target="_blank">', ensembl_gene_id, '</a>'))
+dplyr::mutate(url_ensembl=paste0('<a href="http://www.ensembl.org/Mus_musculus/Gene/Summary?g=', ensembl_gene_id, '" target="_blank">', ensembl_gene_id, '</a>'))
 
 ret %>% dplyr::filter(!is.na(entrezgene)) %>% head
 
-write.csv(ret, file=file.path('../data/mouse_geneid_map_grch37_081417.csv'), row.names=FALSE)
-
+write.csv(ret, file=file.path('../data/mouse_geneid_map_GRCm38_081517.csv'), row.names=FALSE)
 
