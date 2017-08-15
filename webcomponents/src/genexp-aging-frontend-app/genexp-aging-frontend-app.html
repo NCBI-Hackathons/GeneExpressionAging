@@ -60,19 +60,34 @@
           value: []
         },
         searchTerm: {
-          type: String
+          type: String,
+          //observer: 'generateSearchTermList'
+        },
+        searchTermList: {
+          type: Array,
+          computed: 'stringToList(searchTerm)'
         },
         geneFindEndpoint: {
           type: String,
-          value: 'http://127.0.0.1:8000/api/series/find'
+          value: 'http://127.0.0.1:8000/api/timeseries'
+          //value: 'http://127.0.0.1:8000/api/series/find'
         }
       },
       search: function(){
+        //this.$.ajax.body = {
+        //  "dataset": "mouse_aging",
+        //  "serie": "gene",
+        //  "text": this.searchTerm
+        //}
         this.$.ajax.body = {
           "dataset": "mouse_aging",
-          "serie": "gene",
-          "text": this.searchTerm
-        }
+          "xaxis": "age",
+          "series": "gene",
+          "restrictions": [
+            ["tissue", "in", ["AM", "LUNG"]],
+            ["flu", "eq", "F150"],
+            ["gene", "in", this.searchTermList]
+        ]}
         this.$.ajax.url = this.geneFindEndpoint;
         this.$.ajax.generateRequest();
       },
@@ -83,6 +98,9 @@
       },
       getEnsembleId: function(){
         //queries API and returns gene id/gene name to ensemble id mapping
+      },
+      stringToList(str){
+        return str.split(",")
       }
     });
   </script>

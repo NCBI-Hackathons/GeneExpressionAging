@@ -20,7 +20,7 @@ import api.urls
 import genvis.urls
 from core import settings
 
-WEBCOMPONENTS_DIR = settings.BASE_DIR + "/../webcomponents/build/default"
+WEBCOMPONENTS_DIR = settings.BASE_DIR + "/../webcomponents/build/unbundled"
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
