@@ -53,6 +53,9 @@ http://127.0.0.1:8000/api/series/find
              "dataset": "mouse_aging",
              "result": [ <result-1>, <result-2>, ...]}
 
+    result: [<ensembl_gene_id>, <external_gene_name>, <entrezgene>]  (yes, an array of three element for each gene)
+
+
 http://127.0.0.1:8000/api/timeseries
 
     Input: {"dataset": "mouse_aging",   // We only have this
@@ -72,7 +75,7 @@ http://127.0.0.1:8000/api/timeseries
          "series": "gene",
          "restrictions": [
              ["tissue", "in", ["AM", "LUNG"]],
-             ["flu", "eq", "F150"],
+             ["flu", "eq", 150],
              ["gene", "in", ["ENSMUSG00000000088", "ENSMUSG00000000001"]]
              ]}    
 
@@ -80,8 +83,9 @@ http://127.0.0.1:8000/api/timeseries
         {"dataset": "mouse_aging",
          "xvalues": <list-of-floats>,
          "series": [
-             {"values": <list-of-floats>,
+             {"values": [ value ],
               "name": <string>}
          ]}
     
+    value: [ <mean>, <stderr> ]
 
