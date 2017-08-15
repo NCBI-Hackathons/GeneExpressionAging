@@ -15,12 +15,17 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.views.static import serve
 import api.urls
 import genvis.urls
+from core import settings
 
+WEBCOMPONENTS_DIR = settings.BASE_DIR + "/../webcomponents/build/default"
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(api.urls)),
-    url(r'^genvis/', include(genvis.urls))
+    url(r'^genvis/', include(genvis.urls)),
+    url(r'^(?P<path>.*)$', serve, {
+        'document_root': WEBCOMPONENTS_DIR, }),
 ]
