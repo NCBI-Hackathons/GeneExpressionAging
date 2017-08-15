@@ -4,11 +4,12 @@
 #libraries
 library(plotly)
 library(rjson)
+library(RColorBrewer)
 
 #function
 render_pca_plot_json <- function(data, metadata, variable_of_interest, genes_of_interest){
   
-  color_list <- c(rgb(0,1,1),rgb(0,0,1),rgb(1,1,0), rgb(1,0,1), rgb(0,1,0), rgb(0,0,0))   #TODO: make the colors better - these are not good colors.
+  color_list = c('#8dd3c7','#ffffb3','#bebada','#fb8072','#80b1d3','#fdb462','#b3de69','#fccde5','#d9d9d9','#bc80bd') #http://colorbrewer2.org/?type=qualitative&scheme=Set3&n=10
   
   #re-order the data to match colnames and rownames
   data <- data[,colnames(data) %in% rownames(metadata)]
