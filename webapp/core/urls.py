@@ -19,13 +19,23 @@ from django.views.static import serve
 import api.urls
 import genvis.urls
 from core import settings
+import pathlib
 
-WEBCOMPONENTS_DIR = settings.BASE_DIR + "/../webcomponents/build/unbundled"
+WEBCOMPONENTS_UNBUNDLED_DIR = settings.BASE_DIR + "/../webcomponents/build/unbundled"
+WEBCOMPONENTS_DEFAULT_DIR = settings.BASE_DIR + "/../webcomponents/build/default"
+
+if pathlib.Path(WEBCOMPONENTS_UNBUNDLED_DIR).exists():
+    POLYMER_DIR = WEBCOMPONENTS_UNBUNDLED_DIR
+elif pathlib.Path(WEBCOMPONENTS_DEFAULT_DIR).exists():
+    POLYMER_DIR = WEBCOMPONENTS_DEFAULT_DIR
+else:
+    raise Exception("Cannot find polymer dir")
+
+print("Using Polymer dir: {}".format(POLYMER_DIR))
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(api.urls)),
     url(r'^genvis/', include(genvis.urls)),
-    url(r'^(?P<path>.*)$', serve, {
-        'document_root': WEBCOMPONENTS_DIR, }),
+    url(r'^(?P<path>.*)$', serve, {'document_root': POLYMER_DIR,})
 ]
