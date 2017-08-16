@@ -24,6 +24,9 @@
         label {
             font-weight: normal;
         }
+        .facets input {
+            margin-right: 3px;
+        }
         .facet-label {
             font-weight: 700;
         }
@@ -48,6 +51,8 @@
   }
 
   annotsLoaded = false;
+  seenF10 = false;
+  seenF150 = false;
   function onDrawAnnots() {
 
     if (annotsLoaded === true) {
@@ -91,10 +96,20 @@
           '</li>';
       }
       ul += '</ul>';
-      uls += ul
+
+      if (parts[2] == 'F10' && seenF10 === false) {
+        ul = '<div style="clear: both;"></div>' + ul;
+        seenF10 = true;
+      }
+      if (parts[2] == 'F150' && seenF150 === false) {
+        ul = '<div style="clear: both;"></div>' + ul;
+        seenF150 = true;
+      }
+
+      uls += ul;
     }
 
-    facetsContainer = '<div>Gene expression (high: >= 2, low < 2; edgeR normalized):</div>' + uls;
+    facetsContainer = '<div style="font-style: italic; margin-bottom: 10px;">Gene expression (high: >= 2, low < 2; edgeR normalized):</div>' + uls;
     d3.select('.facets').html(facetsContainer);
 
     d3.selectAll("input").on("click", function() {
