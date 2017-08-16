@@ -36,12 +36,29 @@ def convert_ensembl(ensembl_names):
         result[v[0]].append(v)
     return result
 
+def convert_to_ensembl_gene(values):
+    if type(values) == str:
+        values = [values]
 
+    result_values = []
+    for value in values:
+        data = mouse_genemap[
+            (mouse_genemap["ensembl_gene_id"].notnull() & mouse_genemap["ensembl_gene_id"].str.contains(value)) |
+            (mouse_genemap["external_gene_name"].notnull() & mouse_genemap["external_gene_name"].str.contains(value)) |
+            (mouse_genemap["entrezgene"].notnull() & mouse_genemap["entrezgene"].str.contains(value))]    
+        for row in data[["ensembl_gene_id", "external_gene_name", "entrezgene"]].iterrows():
+            index, (ensembl_gene_id, external_gene_name, entrezgene) = row
+            print(ensembl_gene_id)
+            result_values.append(ensembl_gene_id)
+    return result_values
+        
+        
 def generate_data(dataset, xaxis, series, restrictions):
     data = all_data
     columns = column_components
     for field, op, value in restrictions:
         if field == dataset["index_name"]:
+            value = convert_to_ensembl_gene(value)
             if op == "eq":
                 data = data.loc[value]
             elif op == "in":
@@ -72,7 +89,7 @@ def generate_data(dataset, xaxis, series, restrictions):
         result = []
         for current in yaxes:
             yindices = columns[columns[series]==current].index
-            values = data[yindices]
+            values = data[yindices].values
             mean = list(values.mean(axis=1))
             std = list(values.std(axis=1))
             result.append((mean, std))
@@ -86,7 +103,7 @@ def generate_data(dataset, xaxis, series, restrictions):
             yvalues = []
             for xvalue in xvalues:
                 yindices = columns[columns[xaxis]==xvalue].index
-                values = data[yindices].loc[current]
+                values = data[yindices].loc[current].values
                 mean = values.mean()
                 std = values.std()
                 yvalues.append((mean, std))
@@ -192,6 +209,7 @@ def time_series(request):
               "field_values": field_values,
               "xvalues": xvalues,
               "series": [{"name": v[0], "values": v[1]} for v in series_values]}
+            
     return JsonResponse(result, encoder=NumpyEncoder)
 
 
