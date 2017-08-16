@@ -1,3 +1,9 @@
+'''
+Purpose: generate the pearson correlation values for all gene pairs in .json format; write to file;
+
+TODO: This script should be wrapped as a POST function to enable generation of correlation values for plot (not yet developed)
+'''
+
 import pandas as pd
 import numpy as np
 from scipy import sparse
