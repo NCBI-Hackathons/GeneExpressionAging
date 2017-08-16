@@ -107,7 +107,7 @@ def get_annotations(gene_locations, expressions):
     # Example "age_flu": 18M_F150 (18 months, f150).  All ages are in months.
     sorted_ages = sort_age_flu(list(ages.keys()))
 
-    for gene_id in list(expressions.keys())[:100]:
+    for gene_id in list(expressions.keys()):
 
         if gene_id not in gene_locations:
             print('Gene locations missing for ' + gene_id)
@@ -154,6 +154,9 @@ data_dir = '../data/'
 
 expressions = get_mean_gene_expressions_over_time('lung')
 
+print('Number of genes with expression data:')
+print(len(expressions))
+
 gene_locations = get_gene_locations()
 
 annotations = get_annotations(gene_locations, expressions)
@@ -162,7 +165,8 @@ num_annots = 0
 for annots in annotations['annots']:
     num_annots += len(annots['annots'])
 
-print('Number of annotations: ' + str(num_annots))
+print('Number of annotations:')
+print(str(num_annots))
 
 ideo_annots = json.dumps(annotations, indent=2)
 
