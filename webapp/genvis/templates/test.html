@@ -4,7 +4,7 @@
 <div class="row">
   <h1>Welcome to NU Genvis</h1>
   {% csrf_token %}
-  <div id="main-canvas" style="width:900px;height:450px;" class="span8"></div>
+  <div id="main-canvas" class="span8"></div>
   <div class="row">
     <div class="span4">
         xaxis:
@@ -34,7 +34,7 @@
 <script type="text/javascript" src="https://cdn.plot.ly/plotly-1.5.0.min.js"></script>
 <script>
 $(document).ready(function () {
-    test("{% url 'api_time_series' %}");
+    test("{% url 'api_time_series' %}", "{% url 'api_heatmap' %}");
 });
 </script>
 {% endblock %}

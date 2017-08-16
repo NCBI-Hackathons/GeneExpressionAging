@@ -1,4 +1,4 @@
-function test(test_url) {
+function test(test_url, heatmap_url) {
     colors = [ 
         '#1f77b4',  // muted blue
         '#ff7f0e',  // safety orange
@@ -60,37 +60,44 @@ function test(test_url) {
             errorBars: true
         };
         redraw();
-        // configData = {
-        //     title: "Test 2: Gene expression (Flu: F150)",
-        //     xlabel: "Age (months)",
-        //     ylabel: "Expression (unit)",
-        //     data: {xaxis: "age",
-        //           series: "tissue",
-        //           restrictions: [["flu", "eq", "F150"],
-        //                          ["gene", "in", ["ENSMUSG00000000088", "ENSMUSG00000000001"]]]},
-        //     errorLineMode: null,
-        //     lineMode: 'lines+markers',
-        //     errorBars: false
-        // };
-        // redraw();
     });
 
     $("#test3Button").click(function (ev) {
-        configData = {
-            title: "Test 3: Gene expression",
-            xlabel: "Tissue",
-            ylabel: "Expression (unit)",
-            data: {dataset: "mouse_aging",
-                  xaxis: "tissue",
-                  series: "gene",
-                  restrictions: [
-                      ["gene", "in", ["ENSMUSG00000000088", "ENSMUSG00000000001"]],
-                      ["age", "eq", 4]]},
-            errorLineMode: null,
-            lineMode: 'markers',
-            errorBars: true
+        var data = {
+            dataset: "mouse_aging",
+            restrictions: []
         };
-        redraw();
+        $.ajax({
+            type: 'post',
+            url: heatmap_url,
+            beforeSend: function (xhr, settings) {
+                var csrftoken = $("[name='csrfmiddlewaretoken']").val();
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            },
+            data: JSON.stringify(data)
+        }).done(function (data) {
+            mainCanvas = document.getElementById('main-canvas');
+            var d = {
+                x: data["labels"],
+                y: data["labels"],
+                z: data["z"],
+                type: "heatmap"
+            };
+            var defaultPlotlyConfiguration = { 
+                displayModeBar: true,
+                modeBarButtonsToRemove: [
+                    'sendDataToCloud', 
+                    'autoScale2d', 
+                    'hoverClosestCartesian', 
+                    'hoverCompareCartesian', 
+                    'lasso2d', 
+                    'select2d'], 
+                displaylogo: false, 
+                showTips: false };
+            Plotly.newPlot(mainCanvas, [d], {
+                title: "Test"
+            }, defaultPlotlyConfiguration);
+        });
     });
 
     $("#test4Button").click(function (ev) {
