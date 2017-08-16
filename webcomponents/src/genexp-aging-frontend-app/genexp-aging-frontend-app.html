@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/paper-autocomplete/paper-autocomplete.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-range-slider/paper-range-slider.html">
 <link rel="import" href="external-scripts.html">
 <link rel="import" href="main-chart.html">
 
@@ -42,52 +43,56 @@
     </style>
     <iron-ajax
             id="ajax"
-            method="post",
+            method="post"
             handle-as="json"
             content-type="application/json"
             on-response="handleResponse"
             debounce-duration="500">
     </iron-ajax>
     <paper-input id="geneSearchInputField" value="{{searchTerm}}" label="Search by gene names, gene ids or ensemble ids"></paper-input>
-    <paper-button raised class="indigo" on-click="search">Search</paper-button>
-    <main-chart
-            data="[[chartData]]" title="Gene expression (tissues: AM, LUNG) (Flu: F150)"
-            xlabel="Age (months)"
-            ylabel="Expression (unit)"></main-chart>
+    <paper-button raised class="indigo" on-click="chartOne">chart 1</paper-button>
+    <paper-button raised class="indigo" on-click="chartTwo">chart 2</paper-button>
+    <!--<paper-range-slider snaps pin step="4" min="4" max="20"></paper-range-slider>-->
+    <main-chart data="[[chartData]]" conf="[[chartConf]]"></main-chart>
     <!--<paper-autocomplete label="Select Gene" id="ensembleSearch" source="[[prompt]]" min-length="2" on-change="getEnsembleId()"></paper-autocomplete>-->
   </template>
   <script>
     Polymer({
       is: 'genexp-aging-frontend-app',
       properties: {
-        prompt: {
-          type: Array,
-          value: []
-        },
         searchTerm: {
           type: String,
-          //observer: 'generateSearchTermList'
+          value: ""
         },
         searchTermList: {
           type: Array,
           computed: 'stringToList(searchTerm)'
         },
-        geneFindEndpoint: {
+        chartDataEndpoint: {
           type: String,
           value: 'http://127.0.0.1:8000/api/timeseries'
-          //value: 'http://127.0.0.1:8000/api/series/find'
+        },
+        geneFindEndpoint: {
+          type: String,
+          value: 'http://127.0.0.1:8000/api/series/find'
+        },
+        chartConf: {
+          type: Object
         },
         chartData: {
           type: Object,
           value: {}
         }
       },
-      search: function(){
-        //this.$.ajax.body = {
-        //  "dataset": "mouse_aging",
-        //  "serie": "gene",
-        //  "text": this.searchTerm
-        //}
+      chartOne: function(){
+        this.chartConf = {
+          "title": "Age expression (tissues: AM, LUNG) (Flu: F150)",
+          "xlabel": "Age (months)",
+          "ylabel": "Expression (unit)",
+          "errorLineMode": 'lines',
+          "lineMode": 'lines+markers',
+          "errorBars": false
+        }
         this.$.ajax.body = {
           "dataset": "mouse_aging",
           "xaxis": "age",
@@ -97,14 +102,41 @@
             ["flu", "eq", 150],
             ["gene", "in", this.searchTermList]
         ]}
-        this.$.ajax.url = this.geneFindEndpoint;
+        this.$.ajax.url = this.chartDataEndpoint;
+        this.$.ajax.generateRequest();
+      },
+      chartTwo: function(){
+        this.chartConf = {
+          "title": "Tissue expression",
+          "xlabel": "Tissue",
+          "ylabel": "Expression (unit)",
+          "errorLineMode": null,
+          "lineMode": 'markers',
+          "errorBars": true
+        }
+        this.$.ajax.body = {
+          "dataset": "mouse_aging",
+          "xaxis": "tissue",
+          "series": "gene",
+            restrictions: [
+              ["gene", "in", this.searchTermList],
+              ["age", "eq", 12]
+            ]
+        }
+        this.$.ajax.url = this.chartDataEndpoint;
         this.$.ajax.generateRequest();
       },
       handleResponse: function(request){
         this.chartData = request.detail.response;
       },
-      getEnsembleId: function(){
-        //queries API and returns gene id/gene name to ensemble id mapping
+      getEnsembleId: function(item){
+        this.$.ajax.body = {
+          "dataset": "mouse_aging",
+          "serie": "gene",
+          "text": item
+        }
+        this.$.ajax.url = this.geneFindEndpoint;
+        this.$.ajax.generateRequest();
       },
       stringToList(str){
         return str.split(",")
