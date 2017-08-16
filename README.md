@@ -2,7 +2,7 @@
 
 ## Overview
 
-The goal of our project is to leverage web technologies to build a modular gene expression viewer for large-scale, complex experiements.  The data included in this repo is just a sample of what can be achieved with this scheme. By using [django](https://www.djangoproject.com/) and [polymer](https://www.polymer-project.org/) for optimal performace, ease of use, and consistency.
+The goal of our project is to leverage web technologies to build a modular gene expression viewer for large-scale, complex experiements.  The data included in this repo is just a sample of what can be achieved with this scheme. By using [Django](https://www.djangoproject.com/) and [Polymer](https://www.polymer-project.org/) for optimal performace, ease of use, and consistency.
 
 ## Audience
 
@@ -10,7 +10,7 @@ We want people with little to no bioinformatics experience to be able to set up 
 
 ## Structue
 
-Django serves the data through API calls, and polymer builds the front end from nice reusable we components.
+Django serves the data through API calls, and polymer builds the front end from nice reusable web components.
 
 ## Requirements
 
