@@ -10,7 +10,7 @@ We want people with little to no bioinformatics experience to be able to set up 
 
 ## Structure
 
-Django serves the data through API calls, and Polymer builds the front end from nice reusable web components.
+Polymer builds the front end from nice reusable web components. Django serves the website, and also allows access to the data through API calls.
 
 ## Requirements
 
@@ -60,8 +60,23 @@ The django server is running directly (django runserver) and using 'screen' to d
 ## Datasets
 
 Dataset structure:
+ - Counts file
+ - metadata file
 
-- <folder> TODO
+### Counts
+First column should be a unique list of gene ID's.  subsequent columns should contain normalized counts, having one column per sample.  A header row with sample names is expected.
+
+### Metadata
+
+First column should correspond to the sample names given in the counts csv. Anay additional columns are associated metadata, and can be used to subset the data for visualizations
+
+## A Note on Annotations
+Currently, this is geared for mouse genomic data.  We have included a script,
+[get_mouse_geneid_map.R](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/backend/get_mouse_geneid_map.R), to create  a mapping file relating ensembl, entrez, and common gene names.
+
+
+
+<!-- - <folder> TODO -->
 
 ## REST API
 
@@ -136,5 +151,60 @@ bower install
 ##  Building and serving the site
 ```
 ./node_modules/.bin/polymer build
+#  for testing, not needed when serving the django site
 ./node_modules/.bin/polymer serve
+```
+
+# Contributing
+
+Suppose you want to generate a figure we haven't sorted out.  Please help us out by following these three easy steps!
+
+1) Create a new POST method in the [views.py](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/webapp/api/) file. See [below](./README.md#creating-a-new-post)
+
+2) Define the plotting parameters in [test.js](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/webapp/genvis/static/js/test.js)
+
+3) Submit a pull request so others can use it too!
+
+## Creating a new POST
+Here is a sample of a post method, in this case for the time series data.  In short, it is extracting certain features from the request (what to use for the x axis, what the restrictions are, etc), and returning the subset of data needed for the visualization as an array in JSON, to be used by the plotting scripts.
+```python
+@method(allowed=['POST'])
+def time_series(request):
+    body = json.loads(request.body.decode("utf-8"))
+    dataset_name = body.get("dataset", None)
+    dataset = settings.DATASETS.get(dataset_name, None)
+    xaxis = body.get("xaxis", None)
+    series = body.get("series", None)
+    restrictions = body.get("restrictions", [])
+
+    print("*" * 80)
+    print("dataset: {}".format(dataset))
+    print("xaxis:   {}".format(xaxis))
+    print("series:  {}".format(series))
+    print("restr:   {}".format(restrictions))
+    print("*" * 80)
+
+    if None in [dataset_name, dataset]:
+        result = {"ok": False,
+                  "message": "dataset not valid"}
+        return JsonResponse(result)
+
+    if xaxis is None:
+        result = {"ok": False,
+                  "message": "xaxis not valid"}
+        return JsonResponse(result)
+
+    if series is None:
+        result = {"ok": False,
+                  "message": "series not valid"}
+        return JsonResponse(result)
+
+    field_values, xvalues, series_values = generate_data(dataset, xaxis, series, restrictions)
+    result = {"ok": True,
+              "dataset": dataset_name,
+              "field_values": field_values,
+              "xvalues": xvalues,
+              "series": [{"name": v[0], "values": v[1]} for v in series_values]}
+    return JsonResponse(result, encoder=NumpyEncoder)
+
 ```
