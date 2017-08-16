@@ -11,7 +11,11 @@
     "paper-autocomplete": "^3.0.1",
     "paper-button": "^2.0.0",
     "iron-ajax": "^2.0.5",
-    "paper-range-slider": "^0.2.7"
+    "paper-range-slider": "^0.2.7",
+    "paper-toggle-button": "^2.0.0",
+    "iron-localstorage": "^2.0.0",
+    "paper-tabs": "^2.0.0",
+    "iron-pages": "^2.0.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
