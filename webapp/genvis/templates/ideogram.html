@@ -14,33 +14,6 @@
 </head>
 <body>
 <div class="main">
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class='navbar-collapse collapse'>
-                <ul class='nav navbar-nav'>
-                    <li>
-                        <a href='/'>
-                            <b>Ideogram | NU Genvis</b>
-                        </a>
-                    </li>
-                    {% if slack_user.logged %}
-                        <li>
-                            <a href=''>
-                                Help
-                            </a>
-                        </li>
-                    {% endif %}
-                </ul>
-                <ul class='nav navbar-nav navbar-right'>
-                    <li>
-                        <p class='navbar-text'>
-                            Ideogram
-                        </p>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
     <div class="container">
         This <a href="https://github.com/eweitz/ideogram" target="_blank">ideogram</a> shows the distribution of all analyzed mouse genes throughout the genome.
         <div class="ideogram-container" style="margin-left: 10px; height: 400px;"></div>
