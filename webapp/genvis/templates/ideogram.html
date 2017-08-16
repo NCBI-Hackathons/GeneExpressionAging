@@ -49,7 +49,7 @@
       if (key in keysToSkip) {
         continue;
       }
-      key = "expression-level_" + key;
+
       filterMap[key] = {
         "extremely-high": 7,
         "very-high": 6,
@@ -93,7 +93,7 @@
         facet = tmp[1] + '_' + tmp[2] + '_' + tmp[3];
         checkedFilter = tmp[tmp.length - 1];
 
-        filterID = filterMap[facet][checkedFilter];
+        filterID = filterMap[facet][checkedFilter]
         if (facet in selections == false) {
           selections[facet] = {};
         }
@@ -123,7 +123,7 @@
     annotationsPath: '{% static "js/ideogram/dist/data/annotations/mouse_aging.json" %}',
     annotationsLayout: 'histogram',
     container: '.ideogram-container',
-    //onDrawAnnots: onDrawAnnots
+    onDrawAnnots: onDrawAnnots
   };
 
   var ideogram = new Ideogram(config);

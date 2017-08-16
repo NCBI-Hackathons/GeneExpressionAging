@@ -177,8 +177,8 @@ def get_annotations(gene_locations, expressions):
         })
 
     keys = ['name', 'start', 'length', 'trackIndex']
-
-    keys.extend(sorted_ages)
+    for age in sorted_ages:
+        keys.append('expression-level_' + age)
 
     annotations = {
         'keys': keys,
