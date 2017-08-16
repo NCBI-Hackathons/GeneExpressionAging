@@ -1,8 +1,10 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-localstorage/iron-localstorage.html">
 <link rel="import" href="../../bower_components/paper-autocomplete/paper-autocomplete.html">
+<link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../bower_components/paper-range-slider/paper-range-slider.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="external-scripts.html">
 <link rel="import" href="main-chart.html">
 
@@ -37,8 +39,16 @@
         };
       }
       #geneSearchInputField {
-        width: 400px;
+        width: 60%;
         display: inline-block;
+      }
+      #ageFilter {
+        width: 50%;
+        margin-left: 25%;
+        margin-top: 30px;
+      }
+      :hidden{
+        display: none;
       }
     </style>
     <iron-ajax
@@ -52,7 +62,16 @@
     <paper-input id="geneSearchInputField" value="{{searchTerm}}" label="Search by gene names, gene ids or ensemble ids"></paper-input>
     <paper-button raised class="indigo" on-click="chartOne">chart 1</paper-button>
     <paper-button raised class="indigo" on-click="chartTwo">chart 2</paper-button>
-    <!--<paper-range-slider snaps pin step="4" min="4" max="20"></paper-range-slider>-->
+    <!--<img src="../../tissue_icons/alveolar_macrophage.svg" alt="alveolar_macrophage">-->
+    <div id="ageFilter" hidden="true">
+      <paper-tabs>
+        <paper-tab id="4" on-tap="_updateAge">4 months</paper-tab>
+        <paper-tab id="9" on-tap="_updateAge">9 months</paper-tab>
+        <paper-tab id="12" on-tap="_updateAge">12 months</paper-tab>
+        <paper-tab id="18" on-tap="_updateAge">18 months</paper-tab>
+        <paper-tab id="24" on-tap="_updateAge">24 months</paper-tab>
+      </paper-tabs>
+    </div>
     <main-chart data="[[chartData]]" conf="[[chartConf]]"></main-chart>
     <!--<paper-autocomplete label="Select Gene" id="ensembleSearch" source="[[prompt]]" min-length="2" on-change="getEnsembleId()"></paper-autocomplete>-->
   </template>
@@ -68,6 +87,10 @@
           type: Array,
           computed: 'stringToList(searchTerm)'
         },
+        tissues: {
+          type: Array,
+          value: ["AM", "LUNG"]
+        },
         chartDataEndpoint: {
           type: String,
           value: '/api/timeseries'
@@ -80,11 +103,16 @@
           type: Object
         },
         chartData: {
-          type: Object,
-          value: {}
+          type: Object
+        },
+        age: {
+          type: Number,
+          value: 4,
+          observer: "chartTwo"
         }
       },
       chartOne: function(){
+        this.$$("#ageFilter").hidden = true;
         this.chartConf = {
           "title": "Age expression (tissues: AM, LUNG) (Flu: F150)",
           "xlabel": "Age (months)",
@@ -98,7 +126,7 @@
           "xaxis": "age",
           "series": "gene",
           "restrictions": [
-            ["tissue", "in", ["AM", "LUNG"]],
+            ["tissue", "in", this.tissues],
             ["flu", "eq", 150],
             ["gene", "in", this.searchTermList]
         ]}
@@ -106,6 +134,7 @@
         this.$.ajax.generateRequest();
       },
       chartTwo: function(){
+        if(this.chartData) this.$$("#ageFilter").hidden = false;
         this.chartConf = {
           "title": "Tissue expression",
           "xlabel": "Tissue",
@@ -120,7 +149,7 @@
           "series": "gene",
             restrictions: [
               ["gene", "in", this.searchTermList],
-              ["age", "eq", 12]
+              ["age", "eq", this.age]
             ]
         }
         this.$.ajax.url = this.chartDataEndpoint;
@@ -140,6 +169,9 @@
       },
       stringToList(str){
         return str.split(",")
+      },
+      _updateAge: function(mouseEvent){
+        this.age=Number(mouseEvent.target.id || mouseEvent.target.parentNode.id);
       }
     });
   </script>
