@@ -6,6 +6,12 @@
 
 In a rush?  Check out our [QuickStart](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/QuickStart.md) guide!
 
+## Try it out!
+Do you have access to the NCBI network?  If so, you can access out dev server!
+
+Click [here](https://54.165.75.220:10090/index.html), ignore your browser's
+warnings, and give it a try!
+
 ## Overview
 
 The goal of our project is to leverage web technologies to build a modular gene expression viewer for large-scale, complex experiments.  The data included in this repo is just a sample of what can be achieved with this scheme by using [Django](https://www.djangoproject.com/) and [Polymer](https://www.polymer-project.org/) for optimal performace, ease of use, and consistency.
