@@ -97,6 +97,13 @@ def time_series(request):
     series = body.get("series", None)
     restrictions = body.get("restrictions", [])
 
+    print("*" * 80)
+    print("dataset: {}".format(dataset))
+    print("xaxis:   {}".format(xaxis))
+    print("series:  {}".format(series))
+    print("restr:   {}".format(restrictions))
+    print("*" * 80)
+    
     if None in [dataset_name, dataset]:
         result = {"ok": False,
                   "message": "dataset not valid"}
@@ -118,6 +125,38 @@ def time_series(request):
               "xvalues": xvalues,
               "series": [{"name": v[0], "values": v[1]} for v in series_values]}
     return JsonResponse(result, encoder=NumpyEncoder)
+
+
+MAX_SERIE_DETAIL_VALUES = 25
+
+@csrf_exempt
+@method(allowed=['POST'])
+def series_detail(request):
+    body = json.loads(request.body.decode("utf-8"))
+    dataset_name = body.get("dataset", None)
+    dataset = settings.DATASETS.get(dataset_name, None)
+    serie = body.get("serie", None)
+
+    if None in [dataset_name, dataset]:
+        result = {"ok": False,
+                  "message": "dataset not valid"}
+        return JsonResponse(result)
+
+    if serie is None:
+        result = {"ok": False,
+                  "message": "serie not valid"}
+        return JsonResponse(result)
+    
+    if serie == dataset["index_name"]:
+        result = {"ok": True,
+                  "wizard": "gene_wizard"}
+        return JsonResponse(result)
+
+    wizard = dataset["series"][serie]["wizard"]
+    result = {"ok": True,
+              "values": sorted(column_components[serie].unique())[0:MAX_SERIE_DETAIL_VALUES],
+              "wizard": wizard}
+    return JsonResponse(result)
 
 
 MAX_GENE_RESULT = 10
@@ -156,6 +195,9 @@ def series_find(request):
         result = {"ok": True,
                   "dataset": dataset_name,
                   "result": [list(s) for s in result_values]}
+        print("*" * 80)
+        print("result: {}".format(result))
+        print("*" * 80)
         return JsonResponse(result)
 
     else:

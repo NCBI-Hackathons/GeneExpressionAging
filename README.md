@@ -61,6 +61,16 @@ Dataset structure:
 
 ## REST API
 
+http://127.0.0.1:8000/api/series/detail
+
+    Input: {"dataset": "mouse_aging",
+            "serie": <serie-name>}
+    Output: {"ok": True/False,
+             "values": <list-of-values>,
+             "wizard": <wizard-name>}
+
+If the serie has a lot of values, the output will not have "values" field.
+
 http://127.0.0.1:8000/api/series/find
 
     Input:  {"dataset": "mouse_aging",

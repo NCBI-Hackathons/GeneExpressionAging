@@ -127,6 +127,19 @@ STATIC_URL = '/static/'
 DATASETS = {
     "mouse_aging": {
         "index_name": "gene",
-        "series": ["age", "flu", "replica", "tissue"]
+        "series": {
+            "age": {
+                "name": "age",
+                "wizard": "age-slider"}, 
+            "flu": {
+                "name": "flu", 
+                "wizard": "table"},
+            "replicate": {
+                "name": "replicate",
+                "wizard": "no-wizard"},
+            "tissue": {
+                "name": "tissue",
+                "wizard": "tissue-wizard"}
+        }
     }
 }
