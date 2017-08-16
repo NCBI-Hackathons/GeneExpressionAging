@@ -47,6 +47,11 @@
         margin-left: 25%;
         margin-top: 30px;
       }
+      img {
+        width: 60px;
+        height: 60px;
+        padding: 10px;
+      }
       :hidden{
         display: none;
       }
@@ -62,7 +67,16 @@
     <paper-input id="geneSearchInputField" value="{{searchTerm}}" label="Search by gene names, gene ids or ensemble ids"></paper-input>
     <paper-button raised class="indigo" on-click="chartOne">chart 1</paper-button>
     <paper-button raised class="indigo" on-click="chartTwo">chart 2</paper-button>
-    <!--<img src="../../tissue_icons/alveolar_macrophage.svg" alt="alveolar_macrophage">-->
+    <div id="tissueFilter" hidden="true">
+      <img id="AM" on-tap="_updateTissue" src="tissue_icons/alveolar_macrophage.png" alt="alveolar macrophage">
+      <img id="AT2" on-tap="_updateTissue" src="tissue_icons/alveolar_type_II_epithelial_cell.png" alt="alveolar type II epithelial cell">
+      <img id="BRAIN" on-tap="_updateTissue" src="tissue_icons/brain.png" alt="brain">
+      <img id="CEREBELLUM" on-tap="_updateTissue" src="tissue_icons/cerebellum.png" alt="cerebellum">
+      <img id="HEART" on-tap="_updateTissue" src="tissue_icons/heart.png" alt="heart">
+      <img id="KIDNEY" on-tap="_updateTissue" src="tissue_icons/kidney.png" alt="kidney">
+      <img id="LUNG" on-tap="_updateTissue" src="tissue_icons/lung.png" alt="lung">
+      <img id="MONODC" on-tap="_updateTissue" src="tissue_icons/monocyte_derived_cell.png" alt="monocyte derived cell">
+    </div>
     <div id="ageFilter" hidden="true">
       <paper-tabs>
         <paper-tab id="4" on-tap="_updateAge">4 months</paper-tab>
@@ -72,8 +86,7 @@
         <paper-tab id="24" on-tap="_updateAge">24 months</paper-tab>
       </paper-tabs>
     </div>
-    <main-chart data="[[chartData]]" conf="[[chartConf]]"></main-chart>
-    <!--<paper-autocomplete label="Select Gene" id="ensembleSearch" source="[[prompt]]" min-length="2" on-change="getEnsembleId()"></paper-autocomplete>-->
+    <main-chart id="mainChart" data="[[chartData]]" conf="[[chartConf]]"></main-chart>
   </template>
   <script>
     Polymer({
@@ -87,9 +100,14 @@
           type: Array,
           computed: 'stringToList(searchTerm)'
         },
-        tissues: {
-          type: Array,
-          value: ["AM", "LUNG"]
+        tissue: {
+          type: String,
+          value: "AM",
+          observer: "chartOne"
+        },
+        infectionLevel: {
+          type: Number,
+          value: 150
         },
         chartDataEndpoint: {
           type: String,
@@ -113,8 +131,9 @@
       },
       chartOne: function(){
         this.$$("#ageFilter").hidden = true;
+        this.$$("#tissueFilter").hidden = false;
         this.chartConf = {
-          "title": "Age expression (tissues: AM, LUNG) (Flu: F150)",
+          "title": "Age expression (tissue: "+this.tissue+") (Flu: "+this.infectionLevel+")",
           "xlabel": "Age (months)",
           "ylabel": "Expression (unit)",
           "errorLineMode": 'lines',
@@ -126,14 +145,15 @@
           "xaxis": "age",
           "series": "gene",
           "restrictions": [
-            ["tissue", "in", this.tissues],
-            ["flu", "eq", 150],
+            ["tissue", "eq", this.tissue],
+            ["flu", "eq", this.infectionLevel],
             ["gene", "in", this.searchTermList]
         ]}
         this.$.ajax.url = this.chartDataEndpoint;
         this.$.ajax.generateRequest();
       },
       chartTwo: function(){
+        this.$$("#tissueFilter").hidden = true;
         if(this.chartData) this.$$("#ageFilter").hidden = false;
         this.chartConf = {
           "title": "Tissue expression",
@@ -172,6 +192,9 @@
       },
       _updateAge: function(mouseEvent){
         this.age=Number(mouseEvent.target.id || mouseEvent.target.parentNode.id);
+      },
+      _updateTissue: function(mouseEvent){
+        this.tissue=mouseEvent.target.id || mouseEvent.target.parentNode.id;
       }
     });
   </script>
