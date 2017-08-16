@@ -1,3 +1,18 @@
+
+'''
+Purpose: This script generates the PCAscatterplot.csv file that is currently being loaded in the PCA tab of the viewer.
+
+Run as follows:
+python get_scatterplot3D_template.py [counts table filepath] [metadata filepath] 
+
+Note: No genes are used for subsetting and the variable of interest is set to 'flu'.
+
+TODO:
+This script should be wrapped into a POST call that takes the user input gene list and user input variable of interest for coloring to enable interactive re-generation of the PCA plot. Currently the PCA plot is static.
+
+'''
+
+
 import sys
 import numpy as np
 from sklearn.decomposition import PCA
