@@ -45,6 +45,17 @@ def generate_data(dataset, xaxis, series, restrictions):
         else:
             raise Exception("op {} is not valid for {}".format(op, field))
 
+    def calculate_field_values(values):
+        if len(values) > 10:
+            return {"truncated": True, "values": values[0:10]}
+        else:
+            return {"truncated": False, "values": values}            
+
+    field_values = {}
+    field_values[dataset["index_name"]] = calculate_field_values(sorted(data.index))
+    for serie_name in dataset["series"].keys():
+        field_values[serie_name] = calculate_field_values(sorted(columns[serie_name].unique()))
+
     if xaxis == dataset["index_name"]:
         xvalues = list(data.index)
         yaxes = sorted(set(columns[series]))
@@ -55,7 +66,7 @@ def generate_data(dataset, xaxis, series, restrictions):
             mean = list(values.mean(axis=1))
             std = list(values.std(axis=1))
             result.append((mean, std))
-        return xvalues, list(zip(yaxes, result))
+        return field_values, xvalues, list(zip(yaxes, result))
     
     if series == dataset["index_name"]:
         xvalues = sorted(set(columns[xaxis].dropna()))
@@ -70,7 +81,7 @@ def generate_data(dataset, xaxis, series, restrictions):
                 std = values.std()
                 yvalues.append((mean, std))
             result.append(yvalues)
-        return xvalues, list(zip(yaxes, result))
+        return field_values, xvalues, list(zip(yaxes, result))
     
     else:
         xvalues = sorted(set(columns[xaxis].dropna()))
@@ -84,7 +95,7 @@ def generate_data(dataset, xaxis, series, restrictions):
                 std = values.std()
                 yvalues.append((mean, std))
             result.append(yvalues)
-        return xvalues, list(zip(yaxes, result))
+        return field_values, xvalues, list(zip(yaxes, result))
 
 
 @csrf_exempt
@@ -97,6 +108,13 @@ def time_series(request):
     series = body.get("series", None)
     restrictions = body.get("restrictions", [])
 
+    print("*" * 80)
+    print("dataset: {}".format(dataset))
+    print("xaxis:   {}".format(xaxis))
+    print("series:  {}".format(series))
+    print("restr:   {}".format(restrictions))
+    print("*" * 80)
+    
     if None in [dataset_name, dataset]:
         result = {"ok": False,
                   "message": "dataset not valid"}
@@ -112,12 +130,45 @@ def time_series(request):
                   "message": "series not valid"}
         return JsonResponse(result)
 
-    xvalues, series_values = generate_data(dataset, xaxis, series, restrictions)
+    field_values, xvalues, series_values = generate_data(dataset, xaxis, series, restrictions)
     result = {"ok": True,
               "dataset": dataset_name,
+              "field_values": field_values,
               "xvalues": xvalues,
               "series": [{"name": v[0], "values": v[1]} for v in series_values]}
     return JsonResponse(result, encoder=NumpyEncoder)
+
+
+MAX_SERIE_DETAIL_VALUES = 25
+
+@csrf_exempt
+@method(allowed=['POST'])
+def series_detail(request):
+    body = json.loads(request.body.decode("utf-8"))
+    dataset_name = body.get("dataset", None)
+    dataset = settings.DATASETS.get(dataset_name, None)
+    serie = body.get("serie", None)
+
+    if None in [dataset_name, dataset]:
+        result = {"ok": False,
+                  "message": "dataset not valid"}
+        return JsonResponse(result)
+
+    if serie is None:
+        result = {"ok": False,
+                  "message": "serie not valid"}
+        return JsonResponse(result)
+    
+    if serie == dataset["index_name"]:
+        result = {"ok": True,
+                  "wizard": "gene_wizard"}
+        return JsonResponse(result)
+
+    wizard = dataset["series"][serie]["wizard"]
+    result = {"ok": True,
+              "values": sorted(column_components[serie].unique())[0:MAX_SERIE_DETAIL_VALUES],
+              "wizard": wizard}
+    return JsonResponse(result)
 
 
 MAX_GENE_RESULT = 10
@@ -156,6 +207,9 @@ def series_find(request):
         result = {"ok": True,
                   "dataset": dataset_name,
                   "result": [list(s) for s in result_values]}
+        print("*" * 80)
+        print("result: {}".format(result))
+        print("*" * 80)
         return JsonResponse(result)
 
     else:
