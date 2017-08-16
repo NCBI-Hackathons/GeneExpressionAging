@@ -16,12 +16,8 @@ warnings, and give it a try!
 
 The goal of our project is to leverage web technologies to build a modular gene expression viewer for large-scale, complex experiments.  The data included in this repo is just a sample of what can be achieved with this scheme by using [Django](https://www.djangoproject.com/) and [Polymer](https://www.polymer-project.org/) for optimal performace, ease of use, and consistency.
 
-##  Screenshots
-
-![view1](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/screenshots/website-gene-view1.png)
-![view2](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/screenshots/website-gene-view2.png)
-![ideogram](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/screenshots/website-ideogram.png)
-![pca](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/screenshots/website-pca.png)]
+## Screenshots
+  [Here are some screenshots](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/screenshots.md) of our example app.
 
 ## Audience
 
