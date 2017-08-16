@@ -1,0 +1,17 @@
+RGB
+#a6cee3, lightblue
+#1f78b4, darkblue
+#b2df8a, palegreen
+#33a02c, forestgreen
+#fb9a99, pink
+#e31a1c, red
+#fdbf6f, peachy
+#ff7f00, orange
+
+JS
+
+['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00']
+
+CSS
+
+.Paired .q0-8{fill:rgb(166,206,227)} .Paired .q1-8{fill:rgb(31,120,180)} .Paired .q2-8{fill:rgb(178,223,138)} .Paired .q3-8{fill:rgb(51,160,44)} .Paired .q4-8{fill:rgb(251,154,153)} .Paired .q5-8{fill:rgb(227,26,28)} .Paired .q6-8{fill:rgb(253,191,111)} .Paired .q7-8{fill:rgb(255,127,0)}
