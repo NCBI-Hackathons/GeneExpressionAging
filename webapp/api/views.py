@@ -100,6 +100,36 @@ def generate_data(dataset, xaxis, series, restrictions):
 
 @csrf_exempt
 @method(allowed=['POST'])
+def heatmap(request):
+    body = json.loads(request.body.decode("utf-8"))
+    dataset_name = body.get("dataset", None)
+    dataset = settings.DATASETS.get(dataset_name, None)
+    restrictions = body.get("restrictions", [])
+
+    if None in [dataset_name, dataset]:
+        result = {"ok": False,
+                  "message": "dataset not valid"}
+        return JsonResponse(result)
+
+    features = all_data.index[0:20]
+    values = all_data.loc[features].transpose().corr()
+
+    labels = list(values.index)
+    result = []
+    for row in values.iterrows():
+        _, values = row
+        result.append(list(values))
+
+    result = {
+        "ok": True,
+        "labels": labels,
+        "z": result
+    }
+    return JsonResponse(result)
+
+
+@csrf_exempt
+@method(allowed=['POST'])
 def time_series(request):
     body = json.loads(request.body.decode("utf-8"))
     dataset_name = body.get("dataset", None)
