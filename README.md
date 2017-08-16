@@ -152,9 +152,10 @@ http://127.0.0.1:8000/api/timeseries
 
 ## Installation
 ```
+cd webcomponents
 npm install bower
 npm install polymer-cli
-bower install
+./node_modules/bower/bin/bower install
 ```
 
 ##  Building and serving the site
