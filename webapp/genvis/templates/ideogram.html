@@ -16,14 +16,25 @@
         body {
             padding-top: 15px;
         }
+        ul {
+            list-style: none;
+            padding-left: 10px;
+            float: left;
+        }
+        label {
+            font-weight: normal;
+        }
+        .facet-label {
+            font-weight: 700;
+        }
     </style>
 </head>
 <body>
 <div class="main">
     <div class="container">
-        This module uses <a href="https://github.com/eweitz/ideogram" target="_blank">Ideogram.js</a> to show the distribution of all analyzed mouse genes throughout the genome.
+        <a href="https://github.com/eweitz/ideogram" target="_blank">Ideogram.js</a> shows the distribution of all analyzed mouse genes throughout the genome.  Filter 15,000+ genes in < 150 ms by clicking the boxes below.
         <div class="ideogram-container" style="margin-top: 10px; margin-left: 10px; height: 400px;"></div>
-        <div class="facets" style="margin-top: 30px;"></div>
+        <div class="facets" style="margin-top: 50px;"></div>
     </div>
 </div>
 <script>
@@ -63,9 +74,9 @@
       }
       var ul = '<ul id="' + key + '" style="float: left">';
       parts = key.split('_');
-      // e.g. expression_04M_F10 -> Expression 04M_F10
-      facetLabel = parts[0][0].toUpperCase() + parts[0].substr(1,) + ': ' + parts[1] + '_' + parts[2];
-      ul += facetLabel;
+      // e.g. expression_04M_F10 -> 04M_F10
+      facetLabel = parts[1] + '_' + parts[2];
+      ul += '<span class="facet-label">' + facetLabel + '</span>';
       var innerKeys = Object.keys(filterMap[key]);
       for (var j = 0; j < innerKeys.length; j++) {
         var innerKey = innerKeys[j];
@@ -81,7 +92,8 @@
       uls += ul
     }
 
-    d3.select('.facets').html(uls);
+    facetsContainer = '<div>Gene expression:</div>' + uls;
+    d3.select('.facets').html(facetsContainer);
 
     d3.selectAll("input").on("click", function() {
       var tmp, facet,
