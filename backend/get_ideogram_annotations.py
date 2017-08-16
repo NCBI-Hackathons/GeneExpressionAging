@@ -54,8 +54,39 @@ def get_mean_gene_expressions_over_time(tissue):
             num_samples_at_age = len(age_indexes)
             mean_expression_by_age[age] = 0
             for age_index in age_indexes:
-                expression = int(float(columns[age_index]))
+                expression = float(columns[age_index])
                 mean_expression_by_age[age] += expression/num_samples_at_age
+
+            for age in mean_expression_by_age:
+                mean = mean_expression_by_age[age]
+                # filterMap = {
+                #     "expression-level": {
+                #         "extremely-high": 7,
+                #         "very-high": 6,
+                #         "high": 5,
+                #         "moderately-high": 4,
+                #         "moderate": 3,
+                #         "low": 2,
+                #         "very-low": 1
+                #     }
+                # };
+
+                if mean < 100:
+                    value = 1
+                elif mean < 200:
+                    value = 2
+                elif mean < 300:
+                    value = 3
+                elif mean < 400:
+                    value = 4
+                elif mean < 500:
+                    value = 5
+                elif mean < 600:
+                    value = 6
+                elif mean >= 600:
+                    value = 7
+
+                mean_expression_by_age[age] = value
 
         expressions[gene_id] = mean_expression_by_age
 
@@ -139,7 +170,7 @@ def get_annotations(gene_locations, expressions):
             'annots': annots_by_chr[chromosome]
         })
 
-    keys = ['name', 'start', 'length', 'traceIndex']
+    keys = ['name', 'start', 'length', 'trackIndex']
 
     keys.extend(sorted_ages)
 
