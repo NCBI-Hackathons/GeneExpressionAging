@@ -7,3 +7,9 @@ class TestView(TemplateView):
 
 class IdeogramView(TemplateView):
     template_name = "ideogram.html"
+
+class MultigeneView(TemplateView):
+    template_name = "multigene.html"
+
+class PCAscatterplotView(TemplateView):
+    template_name = "PCAscatterplot.csv"
