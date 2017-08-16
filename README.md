@@ -70,15 +70,37 @@ You can now close the ssh connection, and django will keep on serving.  To stop 
 # Datasets
 
 Dataset structure:
- - Counts file
- - metadata file
+ - .csv counts file
+ - .csv metadata file
 
 ### Counts
 First column should be a unique list of gene ID's.  subsequent columns should contain normalized counts, having one column per sample.  A header row with sample names is expected.
 
+Example:
+```
+,M01_Lung_24M_F0_1,M02_Lung_24M_F0_2,M03_Lung_24M_F0_3,M04_Lung_18M_F0_1,M05_Lung_18M_F0_2,M06_Lung_18M_F0_3
+ENSMUSG00000000001,6.174532,6.371318,6.344995,6.349766,6.671662,6.131033
+ENSMUSG00000000028,4.117880,3.801730,4.066170,3.700697,3.881500,4.213005
+ENSMUSG00000000031,5.607145,5.589857,5.510131,5.550341,5.569334,5.652838
+ENSMUSG00000000037,3.562216,3.872689,4.099348,3.675672,3.940676,4.227414
+ENSMUSG00000000049,7.000757,7.821398,8.292461,7.531357,8.534585,6.471823
+ENSMUSG00000000056,5.676189,5.843910,5.796951,5.924107,5.656007,5.631688
+```
+
 ### Metadata
 
 First column should correspond to the sample names given in the counts csv. Anay additional columns are associated metadata, and can be used to subset the data for visualizations
+
+Example:
+```
+,animal_id,flu,age,replicate,tissue
+M01_Lung_24M_F0_1,1,0,24,1,Lung
+M02_Lung_24M_F0_2,2,0,24,2,Lung
+M03_Lung_24M_F0_3,3,0,24,3,Lung
+M04_Lung_18M_F0_1,4,0,18,1,Lung
+M05_Lung_18M_F0_2,5,0,18,2,Lung
+M06_Lung_18M_F0_3,6,0,18,3,Lung
+```
 
 ## A Note on Annotations
 Currently, this is geared for mouse genomic data.  We have included a script,
