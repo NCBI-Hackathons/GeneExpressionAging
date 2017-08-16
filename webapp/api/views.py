@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from api.tags import method
 from core import settings
 
+from collections import defaultdict
 import json
 import numpy as np
 import pandas as pd
@@ -27,11 +28,37 @@ all_data = pd.DataFrame.from_csv("../data/norm_data/norm_all.csv")
 column_components = pd.DataFrame.from_csv("../data/norm_data/norm_metadata.csv")
 mouse_genemap = pd.read_csv("../data/mouse_geneid_map_GRCm38_081517.csv", dtype=str)
 
+def convert_ensembl(ensembl_names):
+    result = defaultdict(lambda: [])
+    keys = mouse_genemap[mouse_genemap["ensembl_gene_id"].isin(ensembl_names)]
+    for v in  keys[["ensembl_gene_id", "external_gene_name", "entrezgene"]].values:
+        v = tuple(v)
+        result[v[0]].append(v)
+    return result
+
+def convert_to_ensembl_gene(values):
+    if type(values) == str:
+        values = [values]
+
+    result_values = []
+    for value in values:
+        data = mouse_genemap[
+            (mouse_genemap["ensembl_gene_id"].notnull() & mouse_genemap["ensembl_gene_id"].str.contains(value)) |
+            (mouse_genemap["external_gene_name"].notnull() & mouse_genemap["external_gene_name"].str.contains(value)) |
+            (mouse_genemap["entrezgene"].notnull() & mouse_genemap["entrezgene"].str.contains(value))]    
+        for row in data[["ensembl_gene_id", "external_gene_name", "entrezgene"]].iterrows():
+            index, (ensembl_gene_id, external_gene_name, entrezgene) = row
+            print(ensembl_gene_id)
+            result_values.append(ensembl_gene_id)
+    return result_values
+        
+        
 def generate_data(dataset, xaxis, series, restrictions):
     data = all_data
     columns = column_components
     for field, op, value in restrictions:
         if field == dataset["index_name"]:
+            value = convert_to_ensembl_gene(value)
             if op == "eq":
                 data = data.loc[value]
             elif op == "in":
@@ -62,7 +89,7 @@ def generate_data(dataset, xaxis, series, restrictions):
         result = []
         for current in yaxes:
             yindices = columns[columns[series]==current].index
-            values = data[yindices]
+            values = data[yindices].values
             mean = list(values.mean(axis=1))
             std = list(values.std(axis=1))
             result.append((mean, std))
@@ -76,7 +103,7 @@ def generate_data(dataset, xaxis, series, restrictions):
             yvalues = []
             for xvalue in xvalues:
                 yindices = columns[columns[xaxis]==xvalue].index
-                values = data[yindices].loc[current]
+                values = data[yindices].loc[current].values
                 mean = values.mean()
                 std = values.std()
                 yvalues.append((mean, std))
@@ -120,9 +147,15 @@ def heatmap(request):
         _, values = row
         result.append(list(values))
 
+    genes = convert_ensembl(labels)
+    final_labels = []
+    for label in labels:
+        external_gene_names = set([v[1] for v in genes[label]])
+        final_labels.append(", ".join(external_gene_names))
+
     result = {
         "ok": True,
-        "labels": labels,
+        "labels": final_labels,
         "z": result
     }
     return JsonResponse(result)
@@ -137,13 +170,6 @@ def time_series(request):
     xaxis = body.get("xaxis", None)
     series = body.get("series", None)
     restrictions = body.get("restrictions", [])
-
-    print("*" * 80)
-    print("dataset: {}".format(dataset))
-    print("xaxis:   {}".format(xaxis))
-    print("series:  {}".format(series))
-    print("restr:   {}".format(restrictions))
-    print("*" * 80)
     
     if None in [dataset_name, dataset]:
         result = {"ok": False,
@@ -161,11 +187,29 @@ def time_series(request):
         return JsonResponse(result)
 
     field_values, xvalues, series_values = generate_data(dataset, xaxis, series, restrictions)
+    if xaxis == "gene":
+        genes = convert_ensembl(xvalues)
+        final_labels = []
+        for label in labels:
+            external_gene_names = set([v[1] for v in genes[label]])
+            xvalues = final_labels.append(", ".join(external_gene_names))
+
+    if series == "gene":
+        names = [name for name, _ in series_values]
+        genes = convert_ensembl(names)
+        final_series_values = []
+        for name, internal_values in series_values:
+            external_gene_names = set([v[1] for v in genes[name]])
+            final_name = ", ".join(external_gene_names)
+            final_series_values.append((final_name, internal_values))
+        series_values = final_series_values
+
     result = {"ok": True,
               "dataset": dataset_name,
               "field_values": field_values,
               "xvalues": xvalues,
               "series": [{"name": v[0], "values": v[1]} for v in series_values]}
+            
     return JsonResponse(result, encoder=NumpyEncoder)
 
 
@@ -237,9 +281,7 @@ def series_find(request):
         result = {"ok": True,
                   "dataset": dataset_name,
                   "result": [list(s) for s in result_values]}
-        print("*" * 80)
-        print("result: {}".format(result))
-        print("*" * 80)
+
         return JsonResponse(result)
 
     else:

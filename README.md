@@ -29,6 +29,7 @@ In order to install, you should create a virtual env using Python 3 and install 
 
     $ mkvirtualenv -p `which python3` GeneExpressionAging
     $ pip install -r requirements.txt
+    $ cd data; mkdir norm_data; cd norm_data; cp ../norm_data.zip .; unzip norm_data.zip; cd ../../
 
 ## Running the server
 To run the server:
@@ -186,13 +187,6 @@ def time_series(request):
     xaxis = body.get("xaxis", None)
     series = body.get("series", None)
     restrictions = body.get("restrictions", [])
-
-    print("*" * 80)
-    print("dataset: {}".format(dataset))
-    print("xaxis:   {}".format(xaxis))
-    print("series:  {}".format(series))
-    print("restr:   {}".format(restrictions))
-    print("*" * 80)
 
     if None in [dataset_name, dataset]:
         result = {"ok": False,
