@@ -4,9 +4,11 @@
 
 # GeneExpressionAging
 
+In a rush?  Check out our [QuickStart](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/QuickStart.md) guide!
+
 ## Overview
 
-The goal of our project is to leverage web technologies to build a modular gene expression viewer for large-scale, complex experiments.  The data included in this repo is just a sample of what can be achieved with this scheme. By using [Django](https://www.djangoproject.com/) and [Polymer](https://www.polymer-project.org/) for optimal performace, ease of use, and consistency.
+The goal of our project is to leverage web technologies to build a modular gene expression viewer for large-scale, complex experiments.  The data included in this repo is just a sample of what can be achieved with this scheme by using [Django](https://www.djangoproject.com/) and [Polymer](https://www.polymer-project.org/) for optimal performace, ease of use, and consistency.
 
 ## Audience
 
@@ -44,19 +46,21 @@ or:
     http://127.0.0.1:8000/index.html
 
 
-## webserver
+<!-- ## webserver -->
 
-The server is running on the server (ask for the IP). In order to connect, use tunneling.
+<!-- The server is running on our development AWS instance (if you need access, open an issue to ). In order to connect, use tunneling. -->
 
-## screens
+## Using screens for running the visualizer on a remote development server
 
-The django server is running directly (django runserver) and using 'screen' to detach the window between SSH sessions:
+The easiest way to keep the django running on a remote server is to use the `screen` unix tool.  Create a `screen` window, run the django server directly (django runserver) and to detach the window between SSH sessions:
 
 - Create the window:
   Run 'screen' and run the server
 
 - Detach the window:
   On the screen, type "Ctrl" + a + d
+
+You can now close the ssh connection, and django will keep on serving.  To stop it, just ssh back in, reattach the window, and interupt the command.
 
 - Reatach window:
   On the ssh session, type `screen -r`
@@ -148,9 +152,10 @@ http://127.0.0.1:8000/api/timeseries
 
 ## Installation
 ```
+cd webcomponents
 npm install bower
 npm install polymer-cli
-bower install
+./node_modules/bower/bin/bower install
 ```
 
 ##  Building and serving the site
