@@ -23,12 +23,12 @@
         <paper-tabs selected="{{selected}}">
             <paper-tab>IDEOGRAM</paper-tab>
             <paper-tab>GENE VIEW</paper-tab>
-            <paper-tab>CORRELATION</paper-tab>
+            <paper-tab>PCA</paper-tab>
         </paper-tabs>
         <iron-pages selected="[[selected]]">
             <iframe src="/genvis/ideogram" width="100%" frameBorder="0" scrolling="no" onload="this.style.height=this.contentDocument.body.scrollHeight +'px';"></iframe>
             <genexp-aging-frontend-app></genexp-aging-frontend-app>
-            <div>test 3</div>
+            <iframe src="/genvis/multigene" width="100%" frameBorder="0" scrolling="no" onload="this.style.height=this.contentDocument.body.scrollHeight +'px';"></iframe>
         </iron-pages>
     </template>
     <script>
@@ -37,7 +37,7 @@
             properties: {
                 selected: {
                     type: Number,
-                    value: 1
+                    value: 0
                 }
             }
         });
