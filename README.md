@@ -1,3 +1,7 @@
+[![DOI](https://zenodo.org/badge/99953417.svg)](https://zenodo.org/badge/latestdoi/99953417)
+
+![icons](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/webcomponents/tissue_icons/aging_mouse_all_tissue_icons.svg)
+
 # GeneExpressionAging
 
 ## Overview
@@ -18,12 +22,13 @@ Polymer builds the front end from nice reusable web components. Django serves th
 - npm
 
 # Django
-##Installation
+## Installation
 In order to install, you should create a virtual env using Python 3 and install the requirements listed on 'requirements.txt':
 
     $ mkvirtualenv -p `which python3` GeneExpressionAging
     $ pip install -r requirements.txt
 
+## Running the server
 To run the server:
 
     $ cd webapp
@@ -57,7 +62,7 @@ The django server is running directly (django runserver) and using 'screen' to d
   On the ssh session, type `screen -r`
 
 
-## Datasets
+# Datasets
 
 Dataset structure:
  - Counts file
@@ -138,8 +143,8 @@ http://127.0.0.1:8000/api/timeseries
                   "values": <list-of-values>}
     value: [ <mean>, <stderr> ]
 
-# Polymer
 
+# Polymer
 
 ## Installation
 ```
