@@ -17,34 +17,13 @@
         Polymer({
             is: 'main-chart',
             properties: {
-                title: {
-                    type: String,
-                    value: ""
-                },
-                xlabel: {
-                    type: String,
-                    value: ""
-                },
-                ylabel: {
-                    type: String,
-                    value: ""
+                conf: {
+                    type: Object
                 },
                 data: {
                     type: Object,
                     value: {},
                     observer: 'redraw'
-                },
-                errorLineMode: {
-                    type: String,
-                    value: 'lines'
-                },
-                errorBars: {
-                    type: Boolean,
-                    value: false
-                },
-                lineMode: {
-                    type: String,
-                    value: 'lines+markers'
                 },
                 colors: {
                     type: Array,
@@ -88,9 +67,9 @@
                             ymax.push(mean + std);
                         });
 
-                        if (self.errorLineMode != null) {
+                        if (self.conf.errorLineMode != null) {
                             plots.push({
-                                mode: self.errorLineMode,
+                                mode: self.conf.errorLineMode,
                                 line: {shape: 'spline', color: color, width: 0},
                                 showlegend: false,
                                 x: xvalues,
@@ -99,7 +78,7 @@
                                 fill: null,
                             });
                             plots.push({
-                                mode: self.errorLineMode,
+                                mode: self.conf.errorLineMode,
                                 line: {shape: 'spline', color: color, width: 0},
                                 showlegend: false,
                                 x: xvalues,
@@ -110,9 +89,9 @@
                             });
                         }
 
-                        if (self.errorBars) {
+                        if (self.conf.errorBars) {
                             plots.push({
-                                mode: self.lineMode,
+                                mode: self.conf.lineMode,
                                 line: {shape: 'spline', color: color},
                                 name: name,
                                 x: xvalues,
@@ -121,7 +100,7 @@
                             });
                         } else {
                             plots.push({
-                                mode: self.lineMode,
+                                mode: self.conf.lineMode,
                                 line: {shape: 'spline', color: color},
                                 name: name,
                                 x: xvalues,
@@ -142,9 +121,9 @@
                             displaylogo: false,
                             showTips: false };
                         Plotly.newPlot(mainCanvas, plots, {
-                            title: self.title,
-                            yaxis: {title: self.ylabel},
-                            xaxis: {title: self.xlabel}
+                            title: self.conf.title,
+                            yaxis: {title: self.conf.ylabel},
+                            xaxis: {title: self.conf.xlabel}
                         }, defaultPlotlyConfiguration);
                     });
                 }
