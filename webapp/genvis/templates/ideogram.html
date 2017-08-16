@@ -40,7 +40,8 @@
         </div>
     </nav>
     <div class="container">
-
+        This <a href="https://github.com/eweitz/ideogram" target="_blank">ideogram</a> shows the distribution of all analyzed mouse genes throughout the genome.
+        <div class="ideogram-container" style="margin-left: 10px; height: 400px;"></div>
     </div>
 </div>
 <script>
@@ -49,7 +50,9 @@
     organism: 'mouse',
     dataDir: '{% static "js/ideogram/dist/data/bands/native/" %}',
     annotationsPath: '{% static "js/ideogram/dist/data/annotations/mouse_aging.json" %}',
-    annotationsLayout: 'histogram'
+    annotationsLayout: 'histogram',
+    container: '.ideogram-container',
+    sex: 'female'
   };
 
   var ideogram = new Ideogram(config);
