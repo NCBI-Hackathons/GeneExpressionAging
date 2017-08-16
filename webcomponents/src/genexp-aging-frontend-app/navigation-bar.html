@@ -26,9 +26,9 @@
             <paper-tab>PCA</paper-tab>
         </paper-tabs>
         <iron-pages selected="[[selected]]">
-            <iframe src="/genvis/ideogram" width="100%" frameBorder="0" scrolling="no" onload="this.style.height=this.contentDocument.body.scrollHeight +'px';"></iframe>
+            <iframe src="/genvis/ideogram" width="100%" frameBorder="0" scrolling="no" style="min-height:1500px;" onload="this.style.height=this.contentDocument.body.scrollHeight +'px';"></iframe>
             <genexp-aging-frontend-app></genexp-aging-frontend-app>
-            <iframe src="/genvis/multigene" width="100%" frameBorder="0" scrolling="no" onload="this.style.height=this.contentDocument.body.scrollHeight +'px';"></iframe>
+            <iframe src="/genvis/multigene" width="100%" frameBorder="0" scrolling="no" style="min-height:500px;"></iframe>
         </iron-pages>
     </template>
     <script>

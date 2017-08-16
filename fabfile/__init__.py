@@ -3,6 +3,17 @@ import json
 import requests
 
 @task
+def heatmap():
+    value = {
+        "dataset": "mouse_aging", 
+        "restrictions": [
+            ["tissue", "in", ["AM", "LUNG"]],
+            ["flu", "eq", 150],
+            ["gene", "in", ["ENSMUSG00000000088", "ENSMUSG00000000001"]]]}
+    r = requests.post("http://127.0.0.1:8000/api/heatmap", json=value)
+    print("Result: {}".format(r.json()))
+    
+@task
 def timeseries():
     value = {
         "dataset": "mouse_aging", 
