@@ -64,9 +64,9 @@ def get_mean_gene_expressions_over_time(tissue):
                 #     "low": 1
                 # };
 
-                if mean < 4:
+                if mean < 2:
                     value = 1
-                elif mean >= 4:
+                elif mean >= 2:
                     value = 2
 
                 mean_expression_by_age[age] = value
