@@ -1,0 +1,60 @@
+{% load staticfiles %}
+<html>
+<head>
+    <title>Ideogram | NU Genvis</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.1/css/select.dataTables.min.css">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static "css/main.css" %}" />
+    <script type="text/javascript" src="{% static "js/ideogram/dist/js/ideogram.min.js" %}"></script>
+</head>
+<body>
+<div class="main">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class='navbar-collapse collapse'>
+                <ul class='nav navbar-nav'>
+                    <li>
+                        <a href='/'>
+                            <b>Ideogram | NU Genvis</b>
+                        </a>
+                    </li>
+                    {% if slack_user.logged %}
+                        <li>
+                            <a href=''>
+                                Help
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+                <ul class='nav navbar-nav navbar-right'>
+                    <li>
+                        <p class='navbar-text'>
+                            Ideogram
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+
+    </div>
+</div>
+<script>
+
+  var config = {
+    organism: 'mouse',
+    dataDir: '{% static "js/ideogram/dist/data/bands/native/" %}',
+    annotationsPath: '{% static "js/ideogram/dist/data/annotations/mouse_aging.json" %}',
+    annotationsLayout: 'histogram'
+  };
+
+  var ideogram = new Ideogram(config);
+</script>
+{% block scripts %}
+{% endblock %}
+</body>
+</html>
