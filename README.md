@@ -6,9 +6,18 @@
 
 In a rush?  Check out our [QuickStart](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/QuickStart.md) guide!
 
+## Try it out!
+Do you have access to the NCBI network?  If so, you can access out dev server!
+
+Click [here](https://54.165.75.220:10090/index.html), ignore your browser's
+warnings, and give it a try!
+
 ## Overview
 
 The goal of our project is to leverage web technologies to build a modular gene expression viewer for large-scale, complex experiments.  The data included in this repo is just a sample of what can be achieved with this scheme by using [Django](https://www.djangoproject.com/) and [Polymer](https://www.polymer-project.org/) for optimal performace, ease of use, and consistency.
+
+## Screenshots
+  [Here are some screenshots](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/screenshots.md) of our example app.
 
 ## Audience
 
@@ -189,48 +198,14 @@ npm install polymer-cli
 ```
 
 # Contributing
+Suppose you want to generate a figure we haven't sorted out. [Here is our guide](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/contributing.md) if you want to help add it!
 
-Suppose you want to generate a figure we haven't sorted out.  Please help us out by following these three easy steps!
-
-1) Create a new POST method in the [views.py](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/webapp/api/) file. See [below](./README.md#creating-a-new-post)
-
-2) Define the plotting parameters in [test.js](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/webapp/genvis/static/js/test.js)
-
-3) Submit a pull request so others can use it too!
-
-## Creating a new POST
-Here is a sample of a post method, in this case for the time series data.  In short, it is extracting certain features from the request (what to use for the x axis, what the restrictions are, etc), and returning the subset of data needed for the visualization as an array in JSON, to be used by the plotting scripts.
-```python
-@method(allowed=['POST'])
-def time_series(request):
-    body = json.loads(request.body.decode("utf-8"))
-    dataset_name = body.get("dataset", None)
-    dataset = settings.DATASETS.get(dataset_name, None)
-    xaxis = body.get("xaxis", None)
-    series = body.get("series", None)
-    restrictions = body.get("restrictions", [])
-
-    if None in [dataset_name, dataset]:
-        result = {"ok": False,
-                  "message": "dataset not valid"}
-        return JsonResponse(result)
-
-    if xaxis is None:
-        result = {"ok": False,
-                  "message": "xaxis not valid"}
-        return JsonResponse(result)
-
-    if series is None:
-        result = {"ok": False,
-                  "message": "series not valid"}
-        return JsonResponse(result)
-
-    field_values, xvalues, series_values = generate_data(dataset, xaxis, series, restrictions)
-    result = {"ok": True,
-              "dataset": dataset_name,
-              "field_values": field_values,
-              "xvalues": xvalues,
-              "series": [{"name": v[0], "values": v[1]} for v in series_values]}
-    return JsonResponse(result, encoder=NumpyEncoder)
-
-```
+# Authors
+- [Helio](heltena@northwestern.edu)
+- [Ziyou Ren](ziyou.ren@northwestern.edu)
+- [Nicholas Waters](nickp60@gmail.com)
+- [Katrina Kalantar](kkalantar@berkeley.edu)
+- [Marcin Domagalski](mjd4v@virginia.edu)
+- [Paul Reyfman](paul.reyfman@northwestern.edu)
+- [Shuaicheng "Freeman" Wang](shuaichengwang@gmail.com)
+- [Eric Weitz](eric.weitz@nih.gov)

@@ -59,24 +59,15 @@ def get_mean_gene_expressions_over_time(tissue):
 
             for age in mean_expression_by_age:
                 mean = mean_expression_by_age[age]
-                # filterMap = {
-                #     "expression": {
-                #         "extremely-high": 7,
-                #         "very-high": 6,
-                #         "high": 5,
-                #         "moderately-high": 4,
-                #         "moderate": 3,
-                #         "low": 2,
-                #         "very-low": 1
-                #     }
+                # filterMap[key] = {
+                #     "high": 2,
+                #     "low": 1
                 # };
 
-                if mean < 1:
+                if mean < 2:
                     value = 1
-                elif mean < 2.5:
+                elif mean >= 2:
                     value = 2
-                elif mean >= 2.5:
-                    value = 3
 
                 mean_expression_by_age[age] = value
 
