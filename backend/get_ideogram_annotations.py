@@ -4,7 +4,7 @@ import json
 parser = argparse.ArgumentParser(description=
     "Get ideogram annotations from expression data\n" +
     "Example:\n" +
-    "python3 get_ideogram_annotations.py --output ../data/mouse_aging_lung_ideo_annots.json",
+    "python3 get_ideogram_annotations.py --output ../webapp/genvis/static/js/ideogram/dist/data/annotations/mouse_aging.json",
     formatter_class=argparse.RawTextHelpFormatter
 )
 
@@ -54,7 +54,7 @@ def get_mean_gene_expressions_over_time(tissue):
             num_samples_at_age = len(age_indexes)
             mean_expression_by_age[age] = 0
             for age_index in age_indexes:
-                expression = float(columns[age_index])
+                expression = int(float(columns[age_index]))
                 mean_expression_by_age[age] += expression/num_samples_at_age
 
         expressions[gene_id] = mean_expression_by_age
@@ -168,6 +168,6 @@ for annots in annotations['annots']:
 print('Number of annotations:')
 print(str(num_annots))
 
-ideo_annots = json.dumps(annotations, indent=2)
+ideo_annots = json.dumps(annotations)
 
 open(output_path, 'w').write(ideo_annots)
