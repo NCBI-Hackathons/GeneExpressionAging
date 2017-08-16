@@ -103,8 +103,14 @@ def get_gene_locations():
     for line in lines:
         columns = [column.strip('"') for column in line.split(',')]
         gene_id = columns[0]
+
+        chromosome = columns[6]
+
+        if chromosome == 'MT':
+            continue
+
         gene_locations[gene_id] = {
-            'chromosome': columns[6],
+            'chromosome': chromosome,
             'start': int(columns[7]),
             'end': int(columns[8])
         }
