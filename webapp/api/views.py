@@ -48,7 +48,6 @@ def convert_to_ensembl_gene(values):
             (mouse_genemap["entrezgene"].notnull() & mouse_genemap["entrezgene"].str.contains(value))]    
         for row in data[["ensembl_gene_id", "external_gene_name", "entrezgene"]].iterrows():
             index, (ensembl_gene_id, external_gene_name, entrezgene) = row
-            print(ensembl_gene_id)
             result_values.append(ensembl_gene_id)
     return result_values
         
@@ -89,7 +88,7 @@ def generate_data(dataset, xaxis, series, restrictions):
         result = []
         for current in yaxes:
             yindices = columns[columns[series]==current].index
-            values = data[yindices].values
+            values = data[yindices]
             mean = list(values.mean(axis=1))
             std = list(values.std(axis=1))
             result.append((mean, std))
@@ -99,7 +98,7 @@ def generate_data(dataset, xaxis, series, restrictions):
         xvalues = sorted(set(columns[xaxis].dropna()))
         yaxes = sorted(set(data.index))
         result = []
-        for current in data.index:
+        for current in data.index.unique():
             yvalues = []
             for xvalue in xvalues:
                 yindices = columns[columns[xaxis]==xvalue].index
