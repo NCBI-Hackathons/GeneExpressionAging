@@ -71,19 +71,19 @@ def get_mean_gene_expressions_over_time(tissue):
                 #     }
                 # };
 
-                if mean < 100:
+                if mean < 1:
                     value = 1
-                elif mean < 200:
+                elif mean < 2.5:
                     value = 2
-                elif mean < 300:
+                elif mean < 5:
                     value = 3
-                elif mean < 400:
+                elif mean < 10:
                     value = 4
-                elif mean < 500:
+                elif mean < 20:
                     value = 5
-                elif mean < 600:
+                elif mean < 30:
                     value = 6
-                elif mean >= 600:
+                elif mean >= 30:
                     value = 7
 
                 mean_expression_by_age[age] = value
