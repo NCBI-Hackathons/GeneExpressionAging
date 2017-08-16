@@ -86,10 +86,13 @@ http://127.0.0.1:8000/api/series/find
 http://127.0.0.1:8000/api/timeseries
 
     Input: {"dataset": "mouse_aging",   // We only have this
+            "field_values": { "name": <field-value> },
             "xaxis": <dimension-name>,
             "series": <dimension-name>,
             "restrictions": <list-of-restrictions>}
 
+    Field-value: {"truncated": True/False,
+                  "values": <list-of-values>}
     Restriction: [<dimension-name>, <operation>, <parameter>]
     Operation: "eq" or "in"
     Parameter: if operation is "eq", parameter should be a string
@@ -108,6 +111,14 @@ http://127.0.0.1:8000/api/timeseries
 
     Output:
         {"dataset": "mouse_aging",
+         "field_values": {
+             "flu": {"truncated": False, 
+                     "values": [150.0]},
+             "gene": {"truncated": False,
+                      "values": ["ENSMUSG00000000001", "ENSMUSG00000000088"]},
+             "tissue": {"truncated": False, 
+                        "values": ["AM"]}
+         },
          "xvalues": <list-of-floats>,
          "series": [
              {"values": [ value ],

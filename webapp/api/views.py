@@ -45,6 +45,17 @@ def generate_data(dataset, xaxis, series, restrictions):
         else:
             raise Exception("op {} is not valid for {}".format(op, field))
 
+    field_values = {}
+    for field, _, _ in restrictions:
+        if field == dataset["index_name"]:
+            current_values = sorted(data.index)
+        else:
+            current_values = sorted(columns[field].unique())
+        if len(current_values) > 10:
+            field_values[field] = {"truncated": True, "values": current_values[0:10]}
+        else:
+            field_values[field] = {"truncated": False, "values": current_values}  
+
     if xaxis == dataset["index_name"]:
         xvalues = list(data.index)
         yaxes = sorted(set(columns[series]))
@@ -55,7 +66,7 @@ def generate_data(dataset, xaxis, series, restrictions):
             mean = list(values.mean(axis=1))
             std = list(values.std(axis=1))
             result.append((mean, std))
-        return xvalues, list(zip(yaxes, result))
+        return field_values, xvalues, list(zip(yaxes, result))
     
     if series == dataset["index_name"]:
         xvalues = sorted(set(columns[xaxis].dropna()))
@@ -70,7 +81,7 @@ def generate_data(dataset, xaxis, series, restrictions):
                 std = values.std()
                 yvalues.append((mean, std))
             result.append(yvalues)
-        return xvalues, list(zip(yaxes, result))
+        return field_values, xvalues, list(zip(yaxes, result))
     
     else:
         xvalues = sorted(set(columns[xaxis].dropna()))
@@ -84,7 +95,7 @@ def generate_data(dataset, xaxis, series, restrictions):
                 std = values.std()
                 yvalues.append((mean, std))
             result.append(yvalues)
-        return xvalues, list(zip(yaxes, result))
+        return field_values, xvalues, list(zip(yaxes, result))
 
 
 @csrf_exempt
@@ -119,9 +130,10 @@ def time_series(request):
                   "message": "series not valid"}
         return JsonResponse(result)
 
-    xvalues, series_values = generate_data(dataset, xaxis, series, restrictions)
+    field_values, xvalues, series_values = generate_data(dataset, xaxis, series, restrictions)
     result = {"ok": True,
               "dataset": dataset_name,
+              "field_values": field_values,
               "xvalues": xvalues,
               "series": [{"name": v[0], "values": v[1]} for v in series_values]}
     return JsonResponse(result, encoder=NumpyEncoder)
