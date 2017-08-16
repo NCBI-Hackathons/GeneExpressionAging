@@ -45,16 +45,16 @@ def generate_data(dataset, xaxis, series, restrictions):
         else:
             raise Exception("op {} is not valid for {}".format(op, field))
 
+    def calculate_field_values(values):
+        if len(values) > 10:
+            return {"truncated": True, "values": values[0:10]}
+        else:
+            return {"truncated": False, "values": values}            
+
     field_values = {}
-    for field, _, _ in restrictions:
-        if field == dataset["index_name"]:
-            current_values = sorted(data.index)
-        else:
-            current_values = sorted(columns[field].unique())
-        if len(current_values) > 10:
-            field_values[field] = {"truncated": True, "values": current_values[0:10]}
-        else:
-            field_values[field] = {"truncated": False, "values": current_values}  
+    field_values[dataset["index_name"]] = calculate_field_values(sorted(data.index))
+    for serie_name in dataset["series"].keys():
+        field_values[serie_name] = calculate_field_values(sorted(columns[serie_name].unique()))
 
     if xaxis == dataset["index_name"]:
         xvalues = list(data.index)
