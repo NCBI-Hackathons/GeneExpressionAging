@@ -1,10 +1,23 @@
+#!/opt/R-3.3.1/bin/Rscript
+
+##!/usr/bin/Rscript
+##!/opt/R-3.3.1/bin/Rscript
+## to run this script
+## ./get_d3heatmap_template.R output.html output.json
+
+args <- commandArgs(trailingOnly=TRUE)
+
+# input args for output files and input genes
+output_corr_d3heatmap_html <- args[1]
+output_corr_d3heatmap_json <- args[2]
+
+#the following is for future development
+#selected_features_infile   <- args[3]
+#selected_samples_infile    <- args[4]
 
 # to generate d3heatmap template for correlation heatmaps
-
-
-## libs
+# libs
 library(data.table)
-library(plyr)
 library(dplyr)
 library(plotly)
 library(d3heatmap)
@@ -17,7 +30,7 @@ serialize <- function(widget) {
       htmlwidgets:::toJSON2(widget, pretty=TRUE, digits = 12)
 }
 
-
+`%+%` <- function(x, y) paste0(x, y)
 
 get_d3heatmap_template_and_json <- function(data, 
                                             selected_features=NULL, 
@@ -26,25 +39,22 @@ get_d3heatmap_template_and_json <- function(data,
                                             k_col=3, ...){
 
     if (is.null(selected_samples)) {
-        selected_samples <- setdiff(colnames(data), 'ensembl')
+        selected_samples <- setdiff(colnames(data), 'gene_ensembl')
     }
 
     if (is.null(selected_features)) {
-        selected_features <- data$ensembl
+        selected_features <- data$gene_ensembl
     }
 
     cor.data <- as.data.frame(data) %>%
-    dplyr::filter(ensembl %in% selected_features) %>%
+    dplyr::filter(gene_ensembl %in% selected_features) %>%
     dplyr::select(one_of(selected_samples)) %>%
     as.matrix
-
-    #rownames(cor.data) <- selected_features
-    #colnames(cor.data) <- selected_samples
 
     # for template usage, just randomly select 50 features
     cor <- cor.data %>%
     t %>%
-    cor(method='pearson')
+    cor(method='pearson', use='complete.obs')
 
     colnames(cor) <- selected_features
     rownames(cor) <- selected_features
@@ -57,37 +67,27 @@ get_d3heatmap_template_and_json <- function(data,
 }
 
 
-
 # example on using the function
 if (TRUE)  {     # load data for template
-    dat  <- fread(file.path('../data/lung.shuff.log.counts.csv'), header=TRUE, stringsAsFactors=FALSE)
-    meta <- fread(file.path('../data/column_components.csv'), header=TRUE, stringsAsFactors=FALSE)
-    selected_features <- dat$ensembl[1:20]
-    selected_samples <- setdiff(colnames(data), 'ensembl')
+    data <- fread(file.path('../data/norm_data/norm_all.csv'), header=TRUE, stringsAsFactors=FALSE)
+    meta <- fread(file.path('../data/norm_data/norm_metadata.csv'), header=TRUE, stringsAsFactors=FALSE)
+
+    dim(data)
+
+    selected_features <- data$gene_ensembl[1:40] # temp choice to randomly select 40 genes
+    selected_samples  <- setdiff(colnames(data), 'gene_ensembl')
+
+    #selected_features <- scan(file=file.path(selected_features_infile), what=character())
+    #selected_samples  <- scan(file=file.path(selected_samples_infile), what=character())
+
 }    # End load data
 
-ret <- get_d3heatmap_template_and_json(dat, selected_features, selected_samples)
 
+ret <- get_d3heatmap_template_and_json(data, selected_features, selected_samples)
 names(ret)
+print( "correlation d3 heatmap html has been outputted to " %+% output_corr_d3heatmap_html ) 
+print( "correlation d3 heatmap json has been outputted to " %+% output_corr_d3heatmap_json ) 
 
-write(ret$json, file=file.path('../webcomponents/src/corr-d3heatmap/template_corr_d3heatmap.json'))
-
-htmlwidgets::saveWidget(as_widget(ret$d3heatmap.obj), 
-                        file.path("/home/freeman/github/GeneExpressionAging/webcomponents/src/corr-d3heatmap/template_corr_d3heatmap.html"), 
-                        selfcontained=FALSE)
-                        #file.path('../webcomponents/src/corr-d3heatmap/template_corr_d3heatmap.html'), 
-                        #file.path("/home/freeman/github/GeneExpressionAging/webcomponents/src/corr-d3heatmap/template_corr_d3heatmap.html"), 
-
-
-#----------------------------------------------------------------------------
-output_name <- 'test'
-`%+%` <- function(x, y) paste0(x, y)
-
-if (FALSE) {    # debug
-    data              <- dat
-    selected_features <- dat$ensembl[1:20]
-    selected_samples  <- setdiff(colnames(data), 'ensembl')
-    k_row             <- 3
-    k_col             <- 3
-}    # End 
+write(ret$json, file=file.path(output_corr_d3heatmap_json))
+htmlwidgets::saveWidget(as_widget(ret$d3heatmap.obj), file.path(output_corr_d3heatmap_html), selfcontained=FALSE)
 

@@ -1,0 +1,45 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tab.html">
+<link rel="import" href="genexp-aging-frontend-app.html">
+
+<dom-module id="navigation-bar">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+            paper-tabs {
+                background-color: #3f51b5;
+                color: white;
+                margin-bottom: 20px;
+            }
+            paper-tabs paper-tab.iron-selected {
+                color: white;
+            }
+        </style>
+
+        <paper-tabs selected="{{selected}}">
+            <paper-tab>IDEOGRAM</paper-tab>
+            <paper-tab>GENE VIEW</paper-tab>
+            <paper-tab>PCA</paper-tab>
+        </paper-tabs>
+        <iron-pages selected="[[selected]]">
+            <iframe src="/genvis/ideogram" width="100%" frameBorder="0" scrolling="no" onload="this.style.height=this.contentDocument.body.scrollHeight +'px';"></iframe>
+            <genexp-aging-frontend-app></genexp-aging-frontend-app>
+            <iframe src="/genvis/multigene" width="100%" frameBorder="0" scrolling="no" onload="this.style.height=this.contentDocument.body.scrollHeight +'px';"></iframe>
+        </iron-pages>
+    </template>
+    <script>
+        Polymer({
+            is: 'navigation-bar',
+            properties: {
+                selected: {
+                    type: Number,
+                    value: 0
+                }
+            }
+        });
+    </script>
+</dom-module>

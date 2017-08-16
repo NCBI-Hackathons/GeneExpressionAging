@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-1.2.0.min.js"></script>
+  </head>
+
+  <body>
+    <h1>Principal Component Analysis</h1>
+    
+    <div id='myDiv'></div>
+    
+    <script>
+    
+      Plotly.d3.csv('./PCAscatterplot.csv', function(err, rows){
+function unpack(rows, key) {
+	return rows.map(function(row)
+	{ return row[key]; });}
+
+var trace1 = {
+	x:unpack(rows, 'PC1'), y: unpack(rows, 'PC2'), z: unpack(rows, 'PC3'), colors:unpack(rows,'color'),text:unpack(rows,'id'),
+	mode: 'markers',
+	marker: {
+		size: 12,
+		color: unpack(rows,'color'),
+		line: {
+		color: unpack(rows,'color'),
+		width: 0.5},
+		opacity: 0.8},
+	type: 'scatter3d'
+};
+
+
+var data = [trace1];
+var layout = {margin: {
+	l: 0,
+	r: 0,
+	b: 0,
+	t: 0
+  }};
+Plotly.newPlot('myDiv', data, layout);
+});     
+
+ 
+    </script>
+    
+    
+  </body>
+
+</html>
+
