@@ -1,6 +1,6 @@
 [![DOI](https://zenodo.org/badge/99953417.svg)](https://zenodo.org/badge/latestdoi/99953417)
 
-![icons](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/webcomponents/tissue_icons/aging_mouse_all_tissue_icons.png)
+![icons](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/screenshots/aging_mouse_all_tissue_icons.png)
 
 # GeneExpressionAging
 
