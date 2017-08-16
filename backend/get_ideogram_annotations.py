@@ -60,7 +60,7 @@ def get_mean_gene_expressions_over_time(tissue):
             for age in mean_expression_by_age:
                 mean = mean_expression_by_age[age]
                 # filterMap = {
-                #     "expression-level": {
+                #     "expression": {
                 #         "extremely-high": 7,
                 #         "very-high": 6,
                 #         "high": 5,
@@ -177,8 +177,8 @@ def get_annotations(gene_locations, expressions):
         })
 
     keys = ['name', 'start', 'length', 'trackIndex']
-
-    keys.extend(sorted_ages)
+    for age in sorted_ages:
+        keys.append('expression_' + age)
 
     annotations = {
         'keys': keys,
