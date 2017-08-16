@@ -1,10 +1,27 @@
+import argparse
 import json
+
+parser = argparse.ArgumentParser(description=
+    "Get ideogram annotations from expression data\n" +
+    "Example:\n" +
+    "python3 get_ideogram_annotations.py --output ../data/mouse_aging_lung_ideo_annots.json",
+    formatter_class=argparse.RawTextHelpFormatter
+)
+
+parser.add_argument("--output", "-o",
+                    help="Output JSON file path",
+                    default='ideo_annots.json')
+
+args = parser.parse_args()
+
+output_path = args.output
+
 
 # Our longitudinal expression data provides multiple replicates for each age
 # This function averages those replicates, combining "age" and "flu" components
 def get_mean_gene_expressions_over_time(tissue):
 
-    with open(data_dir + tissue + '.cleaned.norm.counts.csv') as f:
+    with open(data_dir + tissue + '.shuff.norm.counts.csv') as f:
         lines = f.readlines()
 
     # Get column headers, without surrounding quotation marks
@@ -49,7 +66,7 @@ def get_gene_locations():
 
     gene_locations = {}
 
-    with open(data_dir + 'mouse_geneid_map_grch37_081417.csv') as f:
+    with open(data_dir + 'mouse_geneid_map_GRCm38_081517.csv') as f:
         lines = f.readlines()[1:]
 
     for line in lines:
@@ -93,7 +110,7 @@ def get_annotations(gene_locations, expressions):
     for gene_id in list(expressions.keys())[:100]:
 
         if gene_id not in gene_locations:
-            # print('Gene locations missing for ' + gene_id)
+            print('Gene locations missing for ' + gene_id)
             continue
 
         location = gene_locations[gene_id]
@@ -122,7 +139,7 @@ def get_annotations(gene_locations, expressions):
             'annots': annots_by_chr[chromosome]
         })
 
-    keys = ['gene_id', 'start', 'length', 'traceIndex']
+    keys = ['name', 'start', 'length', 'traceIndex']
 
     keys.extend(sorted_ages)
 
@@ -133,7 +150,6 @@ def get_annotations(gene_locations, expressions):
 
     return annotations
 
-
 data_dir = '../data/'
 
 expressions = get_mean_gene_expressions_over_time('lung')
@@ -142,5 +158,12 @@ gene_locations = get_gene_locations()
 
 annotations = get_annotations(gene_locations, expressions)
 
-print(json.dumps(annotations, indent=2))
+num_annots = 0
+for annots in annotations['annots']:
+    num_annots += len(annots['annots'])
 
+print('Number of annotations: ' + str(num_annots))
+
+ideo_annots = json.dumps(annotations, indent=2)
+
+open(output_path, 'w').write(ideo_annots)
