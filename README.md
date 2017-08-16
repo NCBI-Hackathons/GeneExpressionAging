@@ -107,3 +107,17 @@ http://127.0.0.1:8000/api/timeseries
     value: [ <mean>, <stderr> ]
 
 # Polymer
+
+
+## Installation
+```
+npm install bower
+npm install polymer-cli
+bower install
+```
+
+##  Building and serving the site
+```
+./node_modules/.bin/polymer build
+./node_modules/.bin/polymer serve
+```
