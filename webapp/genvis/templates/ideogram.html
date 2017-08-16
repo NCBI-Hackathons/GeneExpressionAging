@@ -9,14 +9,20 @@
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static "css/main.css" %}" />
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.12/crossfilter.min.js"></script>
+    <link rel="stylesheet" href="{% static "js/ideogram/dist/css/ideogram.css" %}"/>
     <script type="text/javascript" src="{% static "js/ideogram/dist/js/ideogram.min.js" %}"></script>
     <script type="text/javascript" src="{% static "js/ideogram/src/js/filter.js" %}"></script>
+    <style>
+        body {
+            padding-top: 15px;
+        }
+    </style>
 </head>
 <body>
 <div class="main">
     <div class="container">
-        This <a href="https://github.com/eweitz/ideogram" target="_blank">ideogram</a> shows the distribution of all analyzed mouse genes throughout the genome.
-        <div class="ideogram-container" style="margin-left: 10px; height: 400px;"></div>
+        This module uses <a href="https://github.com/eweitz/ideogram" target="_blank">Ideogram.js</a> to show the distribution of all analyzed mouse genes throughout the genome.
+        <div class="ideogram-container" style="margin-top: 10px; margin-left: 10px; height: 400px;"></div>
         <div class="facets" style="margin-top: 30px;"></div>
     </div>
 </div>
