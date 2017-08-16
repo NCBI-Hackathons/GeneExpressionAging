@@ -9,7 +9,6 @@
   </head>
 
   <body>
-    <h1>Principal Component Analysis</h1>
     
     <div id='myDiv'></div>
     
@@ -24,7 +23,7 @@ var trace1 = {
 	x:unpack(rows, 'PC1'), y: unpack(rows, 'PC2'), z: unpack(rows, 'PC3'), colors:unpack(rows,'color'),text:unpack(rows,'id'),
 	mode: 'markers',
 	marker: {
-		size: 12,
+		size: 10,
 		color: unpack(rows,'color'),
 		line: {
 		color: unpack(rows,'color'),
@@ -40,6 +39,10 @@ var layout = {margin: {
 	r: 0,
 	b: 0,
 	t: 0
+  },scene: {
+    xaxis: { title: 'PC1' },
+    yaxis: { title: 'PC2' },
+    zaxis: { title: 'PC3' }
   }};
 Plotly.newPlot('myDiv', data, layout);
 });     
