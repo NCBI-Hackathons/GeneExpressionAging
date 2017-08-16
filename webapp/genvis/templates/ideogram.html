@@ -60,7 +60,10 @@
         "very-low": 1
       }
       var ul = '<ul id="' + key + '" style="float: left">';
-      ul += ideogram.rawAnnots.keys[i];
+      parts = key.split('_');
+      // e.g. expression_04M_F10 -> Expression 04M_F10
+      facetLabel = parts[0][0].toUpperCase() + parts[0].substr(1,) + ': ' + parts[1] + '_' + parts[2];
+      ul += facetLabel;
       var innerKeys = Object.keys(filterMap[key]);
       for (var j = 0; j < innerKeys.length; j++) {
         var innerKey = innerKeys[j];
@@ -93,7 +96,7 @@
         facet = tmp[1] + '_' + tmp[2] + '_' + tmp[3];
         checkedFilter = tmp[tmp.length - 1];
 
-        filterID = filterMap[facet][checkedFilter]
+        filterID = filterMap[facet][checkedFilter];
         if (facet in selections == false) {
           selections[facet] = {};
         }
