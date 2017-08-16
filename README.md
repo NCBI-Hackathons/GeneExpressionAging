@@ -32,7 +32,11 @@ To run the server:
 
 You can browse:
 
-    http://127.0.0.1:8000/genvis/test
+    http://127.0.0.1:8000/genvis/ideogram
+
+or:
+
+    http://127.0.0.1:8000/index.html
 
 
 ## webserver
