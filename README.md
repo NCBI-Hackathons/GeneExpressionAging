@@ -188,13 +188,6 @@ def time_series(request):
     series = body.get("series", None)
     restrictions = body.get("restrictions", [])
 
-    print("*" * 80)
-    print("dataset: {}".format(dataset))
-    print("xaxis:   {}".format(xaxis))
-    print("series:  {}".format(series))
-    print("restr:   {}".format(restrictions))
-    print("*" * 80)
-
     if None in [dataset_name, dataset]:
         result = {"ok": False,
                   "message": "dataset not valid"}
