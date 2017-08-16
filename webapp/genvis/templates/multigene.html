@@ -15,7 +15,7 @@
     
     <script>
     
-      Plotly.d3.csv('./templates/PCAscatterplot.csv', function(err, rows){
+      Plotly.d3.csv('./PCAscatterplot.csv', function(err, rows){
 function unpack(rows, key) {
 	return rows.map(function(row)
 	{ return row[key]; });}
