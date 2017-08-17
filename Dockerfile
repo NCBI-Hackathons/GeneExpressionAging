@@ -18,7 +18,7 @@ ENV SRC /opt
 
 WORKDIR $SRC
 RUN git clone https://github.com/stevetsa/GeneExpressionAging
-RUN mkvirtualenv -p `which python3` GeneExpressionAging
+RUN mkvirtualenv -p python3 GeneExpressionAging
 RUN pip install -r requirements.txt
 RUN mkdir data/norm_data
 COPY data/normal_data.zip /data/norm_data/
