@@ -1,6 +1,6 @@
 [![DOI](https://zenodo.org/badge/99953417.svg)](https://zenodo.org/badge/latestdoi/99953417)
 
-![icons](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/webcomponents/tissue_icons/aging_mouse_all_tissue_icons.png)
+![icons](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/screenshots/aging_mouse_all_tissue_icons.png)
 
 # GeneExpressionAging
 
@@ -201,11 +201,11 @@ npm install polymer-cli
 Suppose you want to generate a figure we haven't sorted out. [Here is our guide](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/contributing.md) if you want to help add it!
 
 # Authors
-- [Helio](heltena@northwestern.edu)
-- [Ziyou Ren](ziyou.ren@northwestern.edu)
-- [Nicholas Waters](nickp60@gmail.com)
-- [Katrina Kalantar](kkalantar@berkeley.edu)
-- [Marcin Domagalski](mjd4v@virginia.edu)
-- [Paul Reyfman](paul.reyfman@northwestern.edu)
-- [Shuaicheng "Freeman" Wang](shuaichengwang@gmail.com)
-- [Eric Weitz](eric.weitz@nih.gov)
+- [Helio](https://amaral.northwestern.edu/people/heltena/)
+- [Ziyou Ren](mailto:ziyou.ren@northwestern.edu)
+- [Nicholas Waters](https://github.com/nickp60/)
+- [Katrina Kalantar](https://github.com/katrinakalantar)
+- [Marcin Domagalski](https://github.com/mdomagalski)
+- [Paul Reyfman](mailto:paul.reyfman@northwestern.edu)
+- [Shuaicheng "Freeman" Wang](https://github.com/wangtulao)
+- [Eric Weitz](https://github.com/eweitz)
