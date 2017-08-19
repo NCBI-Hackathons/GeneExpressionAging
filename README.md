@@ -7,10 +7,7 @@
 In a rush?  Check out our [QuickStart](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/QuickStart.md) guide!
 
 ## Try it out!
-Do you have access to the NCBI network?  If so, you can access out dev server!
-
-Click [here](https://54.165.75.220:10090/index.html), ignore your browser's
-warnings, and give it a try!
+An [interactive ideogram showing gene expression over time](https://ncbi-hackathons.github.io/GeneExpressionAging/ideogram) is one of several modular components included in our template.  Check it out, and then install our other modules to experiment with your own data!
 
 ## Overview
 
