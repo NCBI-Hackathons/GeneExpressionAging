@@ -14,7 +14,7 @@ An [interactive ideogram showing gene expression over time](https://ncbi-hackath
 The goal of our project is to leverage web technologies to build a modular gene expression viewer for large-scale, complex experiments.  The data included in this repo is just a sample of what can be achieved with this scheme by using [Django](https://www.djangoproject.com/) and [Polymer](https://www.polymer-project.org/) for optimal performace, ease of use, and consistency.
 
 ## Screenshots
-  [Here are some screenshots](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/screenshots.md) of our example app.
+[Here are some screenshots](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/screenshots.md) of our example app.
 
 ## Audience
 
@@ -51,11 +51,6 @@ You can browse:
 or:
 
     http://127.0.0.1:8000/index.html
-
-
-<!-- ## webserver -->
-
-<!-- The server is running on our development AWS instance (if you need access, open an issue to ). In order to connect, use tunneling. -->
 
 ## Using screens for running the visualizer on a remote development server
 
@@ -108,9 +103,9 @@ M05_Lung_18M_F0_2,5,0,18,2,Lung
 M06_Lung_18M_F0_3,6,0,18,3,Lung
 ```
 
-## A Note on Annotations
+## A note on annotations
 Currently, this is geared for mouse genomic data.  We have included a script,
-[get_mouse_geneid_map.R](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/backend/get_mouse_geneid_map.R), to create  a mapping file relating ensembl, entrez, and common gene names.
+[get_mouse_geneid_map.R](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/backend/get_mouse_geneid_map.R), to create a mapping file relating Ensembl, Entrez, and common gene names.
 
 
 
