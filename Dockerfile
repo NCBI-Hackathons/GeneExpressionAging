@@ -2,33 +2,55 @@ FROM ubuntu:latest
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 MAINTAINER Steve Tsang <mylagimail2004@yahoo.com>
 RUN apt-get update
-
+ 
 RUN apt-get install --yes \
- build-essential \
- git-all \
- python3 \
- python \
- python-dev \
- python-distribute \
- python-pip \
- npm \
- nodejs
-
+build-essential \
+git-all \
+python3 \
+python \
+python-dev \
+python-distribute \
+python-pip \
+npm \
+nodejs \
+unzip \
+python3-pip 
+ 
 ENV SRC /opt
-
+ 
 WORKDIR $SRC
 RUN git clone https://github.com/stevetsa/GeneExpressionAging
-RUN mkvirtualenv -p python3 GeneExpressionAging
-RUN pip install -r requirements.txt
-RUN mkdir data/norm_data
-COPY data/normal_data.zip /data/norm_data/
-
+#RUN pip install virtualenv
+#RUN mkvirtualenv -p python3 GeneExpressionAging
+ 
+WORKDIR GeneExpressionAging
+RUN pip3 install -r requirements.txt
+RUN mkdir -p data/norm_data
+RUN pushd data \
+&& unzip norm_data.zip -d norm_data \
+&& popd
+ 
+RUN apt-get -y install xvfb git wget xz-utils
+ 
+WORKDIR webcomponents
+RUN wget https://nodejs.org/dist/v6.9.1/node-v6.9.1-linux-x64.tar.xz && \
+    tar -C /usr/local --strip-components 1 -xJf node*tar.xz && \
+    rm node*tar.xz
+ 
+RUN npm install -g bower && \
+    echo '{ "allow_root": true, "gitUseHttps": true }' > ~/.bowerrc && \
+    echo "N\n" | bower
+ 
+RUN npm install polymer-cli
+RUN ./node_modules/bower/bin/bower install
+RUN ./node_modules/.bin/polymer build
+ 
 # Expose ports
-EXPOSE 80
-
+EXPOSE 8000
+ 
 # Set the default command to execute
-WORKDIR $SRC/webapp
-RUN workon GeneExpressionAging
-CMD python manage.py runserver
-
-COPY Dockerfile /opt/Dockerfile
+WORKDIR ../webapp
+#RUN workon GeneExpressionAging
+CMD python3 manage.py runserver
+ 
+#COPY Dockerfile /opt/Dockerfile
