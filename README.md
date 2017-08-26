@@ -197,6 +197,39 @@ npm install polymer-cli
 ./node_modules/.bin/polymer serve
 ```
 
+# Docker
+A Docker container is available for this project.  For a detailed description of docker, please refer to this [overview.](https://www.docker.com/what-docker)
+
+## Install Docker
+Follow [instructions](https://www.docker.com/docker-mac) to install Docker for your environment.
+
+## Build a Docker image locally (Skip to the next section if you do not wish to build it locally)
+```
+## git clone https://github.com/stevetsa/GeneExpressionAging
+git clone https://github.com/NCBI-Hackathons/GeneExpressionAging
+cd GeneExpressionAging
+docker build -t gea-image .
+docker run -itp 8000:8000 gea-image
+```
+You can browse:
+    http://127.0.0.1:8000/genvis/ideogram
+or:
+    http://127.0.0.1:8000/index.html
+    
+Ctrl-C to stop the server.
+
+
+## Get a pre-built image from DockerHub and run the server
+```
+docker pull stevetsa/GeneExpressionAging
+```
+You can browse:
+    http://127.0.0.1:8000/genvis/ideogram
+or:
+    http://127.0.0.1:8000/index.html
+
+Ctrl-C to stop the server.
+
 # Contributing
 Suppose you want to generate a figure we haven't sorted out. [Here is our guide](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/contributing.md) if you want to help add it!
 
