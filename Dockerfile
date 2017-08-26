@@ -26,12 +26,12 @@ RUN git clone https://github.com/stevetsa/GeneExpressionAging
  
 WORKDIR GeneExpressionAging
 #RUN pip3 install -r requirements.txt
-RUN mkdir -p data/norm_data
-RUN pushd data \
-&& unzip norm_data.zip -d norm_data \
-&& popd
+#RUN mkdir -p data/norm_data
+#RUN pushd data \
+#&& unzip norm_data.zip -d norm_data \
+#&& popd
  
-RUN apt-get -y install xvfb git wget xz-utils
+#RUN apt-get -y install xvfb git wget xz-utils
  
 WORKDIR webcomponents
 RUN wget https://nodejs.org/dist/v6.9.1/node-v6.9.1-linux-x64.tar.xz && \
