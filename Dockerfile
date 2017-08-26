@@ -1,11 +1,4 @@
-FROM ubuntu:latest
-RUN rm /bin/sh && ln -s /bin/bash /bin/sh
-MAINTAINER Steve Tsang <mylagimail2004@yahoo.com>
-RUN apt-get update
-
-RUN apt-get install --yes \
-build-essential \
-git-all \ROM ubuntu:latest
+ROM ubuntu:latest
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 MAINTAINER Steve Tsang <mylagimail2004@yahoo.com>
 RUN apt-get update
