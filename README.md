@@ -222,7 +222,7 @@ Ctrl-C to stop the server.
 ## Get a pre-built image from DockerHub and run the server
 ```
 docker pull stevetsa/gea-image
-docker run -itp 8000:8000 gea-image
+docker run -itp 8000:8000 stevetsa/gea-image
 ```
 You can browse:
     http://127.0.0.1:8000/genvis/ideogram
