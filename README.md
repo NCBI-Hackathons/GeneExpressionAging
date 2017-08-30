@@ -29,6 +29,23 @@ Polymer builds the front end from nice reusable web components. Django serves th
 - python3
 - npm
 
+# Polymer
+
+## Installation
+```
+cd webcomponents
+npm install bower
+npm install polymer-cli
+./node_modules/bower/bin/bower install
+```
+
+##  Building and serving the site
+```
+./node_modules/.bin/polymer build
+#  for testing, not needed when serving the django site
+./node_modules/.bin/polymer serve
+```
+
 # Django
 ## Installation
 In order to install, you should create a virtual env using Python 3 and install the requirements listed on 'requirements.txt':
@@ -67,6 +84,39 @@ You can now close the ssh connection, and django will keep on serving.  To stop 
 - Reatach window:
   On the ssh session, type `screen -r`
 
+# Docker
+A Docker container is available for this project.  For a detailed description of docker, please refer to this [overview.](https://www.docker.com/what-docker)
+
+## Install Docker
+Follow [instructions](https://www.docker.com/docker-mac) to install Docker for your environment.
+
+## Build a Docker image locally (Skip to the next section if you do not wish to build it locally)
+```
+## git clone https://github.com/stevetsa/GeneExpressionAging
+git clone https://github.com/NCBI-Hackathons/GeneExpressionAging
+cd GeneExpressionAging
+docker build -t gea-image .
+docker run -itp 8000:8000 gea-image
+```
+You can browse:
+    http://127.0.0.1:8000/genvis/ideogram
+or:
+    http://127.0.0.1:8000/index.html
+    
+Ctrl-C to stop the server.
+
+
+## Get a pre-built image from DockerHub and run the server
+```
+docker pull stevetsa/gea-image
+docker run -itp 8000:8000 stevetsa/gea-image
+```
+You can browse:
+    http://127.0.0.1:8000/genvis/ideogram
+or:
+    http://127.0.0.1:8000/index.html
+
+Ctrl-C to stop the server.
 
 # Datasets
 
@@ -170,58 +220,6 @@ http://127.0.0.1:8000/api/timeseries
     Field-value: {"truncated": True/False,
                   "values": <list-of-values>}
     value: [ <mean>, <stderr> ]
-
-
-# Polymer
-
-## Installation
-```
-cd webcomponents
-npm install bower
-npm install polymer-cli
-./node_modules/bower/bin/bower install
-```
-
-##  Building and serving the site
-```
-./node_modules/.bin/polymer build
-#  for testing, not needed when serving the django site
-./node_modules/.bin/polymer serve
-```
-
-# Docker
-A Docker container is available for this project.  For a detailed description of docker, please refer to this [overview.](https://www.docker.com/what-docker)
-
-## Install Docker
-Follow [instructions](https://www.docker.com/docker-mac) to install Docker for your environment.
-
-## Build a Docker image locally (Skip to the next section if you do not wish to build it locally)
-```
-## git clone https://github.com/stevetsa/GeneExpressionAging
-git clone https://github.com/NCBI-Hackathons/GeneExpressionAging
-cd GeneExpressionAging
-docker build -t gea-image .
-docker run -itp 8000:8000 gea-image
-```
-You can browse:
-    http://127.0.0.1:8000/genvis/ideogram
-or:
-    http://127.0.0.1:8000/index.html
-    
-Ctrl-C to stop the server.
-
-
-## Get a pre-built image from DockerHub and run the server
-```
-docker pull stevetsa/gea-image
-docker run -itp 8000:8000 stevetsa/gea-image
-```
-You can browse:
-    http://127.0.0.1:8000/genvis/ideogram
-or:
-    http://127.0.0.1:8000/index.html
-
-Ctrl-C to stop the server.
 
 # Contributing
 Suppose you want to generate a figure we haven't sorted out. [Here is our guide](https://github.com/NCBI-Hackathons/GeneExpressionAging/blob/master/contributing.md) if you want to help add it!
